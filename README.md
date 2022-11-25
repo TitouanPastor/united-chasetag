@@ -15,6 +15,7 @@ L'application permet de :
 
 # Membre du groupe
 Groupe A :
+
     - BAYCHE Baptiste
     - PASTOR Titouan
 
