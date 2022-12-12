@@ -513,6 +513,26 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
+.absolute {
+  position: absolute;
+}
+
+.relative {
+  position: relative;
+}
+
+.bottom-0 {
+  bottom: 0px;
+}
+
+.right-0 {
+  right: 0px;
+}
+
+.left-0 {
+  left: 0px;
+}
+
 .mt-4 {
   margin-top: 1rem;
 }
@@ -527,6 +547,26 @@ video {
 
 .block {
   display: block;
+}
+
+.h-32 {
+  height: 8rem;
+}
+
+.h-16 {
+  height: 4rem;
+}
+
+.w-32 {
+  width: 8rem;
+}
+
+.w-16 {
+  width: 4rem;
+}
+
+.cursor-alias {
+  cursor: alias;
 }
 
 .rounded-lg {
@@ -585,6 +625,10 @@ video {
 
 .underline {
   text-decoration-line: underline;
+}
+
+.hover\:cursor-alias:hover {
+  cursor: alias;
 }
 
 .hover\:underline:hover {
