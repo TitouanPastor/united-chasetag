@@ -9,8 +9,13 @@
 </head>
 <body>
 <!-- Pin to bottom right corner -->
+<?php
+  require_once('BDD.php');
+  $bdd = new connectBDD();
+?>
+
 <div class="relative h-32 w-32 hover:cursor-alias ...">
   <div class="absolute bottom-0 left-0 h-16 w-16 ">09</div>
 </div>
 </body>
-</html>
+</html> 
