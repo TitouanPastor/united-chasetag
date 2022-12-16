@@ -8,26 +8,27 @@
 </head>
 
 <body>
-    <h1 class="text-3xl font-bold underline">
-        Hello world!
-    </h1>
-    <div class="md:flex">
-        <div class="md:flex-shrink-0">
-            <img class="rounded-lg md:w-56" src="/img/shopping.jpg" alt="Woman paying for a purchase">
-        </div>
-        <div class="mt-4 md:mt-0 md:ml-6">
-            <div class="uppercase tracking-wide text-sm text-indigo-600 font-bold">
-                Marketing
+    <main class="flex">
+        <nav class="flex flex-col justify-between w-60 h-screen fixed bg-gradient-to-br from-violet-700 to-violet-900 text-white border-slate-500 border-r-[1px]">
+            <div class="flex items-center">
+                <img class="w-24" src="img/team-logo.png" alt="Logo United">
+                <span class="text-2xl">United Chasetag</span>
             </div>
-            <a href="/get-started" class="block mt-1 text-lg leading-tight font-semibold text-gray-900 hover:underline">
-                Finding customers for your new business
-            </a>
-            <p class="mt-2 text-gray-600 text">
-                Getting a new business off the ground is a lot of hard work.
-                Here are five ideas you can use to find your first customers.
-            </p>
-        </div>
-    </div>
+            <ul class="flex justify-start h-full p-4 pt-32 flex-col leading-10 text-lg">
+                <li><a href="index.php" class="hover:underline">Effectif</a></li>
+                <li><a href="about.php" class="hover:underline">Ajouter un joueur</a></li>
+                <li><a href="contact.php" class="hover:underline">Matchs</a></li>
+                <li><a href="contact.php" class="hover:underline">Ajouter un match</a></li>
+            </ul>
+            <div class="flex flex-col p-4">
+                <a href="logout.php" class="w-fit bg-violet-700 transition-colors p-2 rounded hover:bg-violet-800">Se déconnecter</a>
+            </div>
+        </nav>
+
+        <section class="w-full">
+
+        </section>
+    </main>
 </body>
 
 </html>
