@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,57 +8,75 @@
     <link href="../dist/output.css" rel="stylesheet">
     <title>Ajouter un joueur</title>
 </head>
+
 <body>
     <main>
-        <section class="addPlayer-contains">
-            <span class="box-decoration-slice bg-gradient-to-r from-indigo-600 to-pink-500 text-white px-2">Ajouter un joueur</span>
-            <form action="addPlayer.php" method="post">
-                <div class="p-10">
-                    <div class="pb-3">
-                        <label for="name">Nom</label>
-                        <input type="text" name="name" id="name" class="form-control" placeholder="Nom du joueur">
+        <section class="addPlayer-contains grid h-screen place-items-center">
+            <h2 class="text-4xl font-bold dark:text-dark h-0">Ajouter un joueur</h2>
+            <form class="w-full max-w-lg">
+                
+                <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+                            Nom
+                        </label>
+                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-black-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border-purple-800" id="grid-first-name" type="text" placeholder="Votre nom">
                     </div>
-                    <div class="pb-3">
-                        <label for="surname">Prénom</label>
-                        <input type="text" name="surname" id="surname" class="form-control" placeholder="Prénom du joueur">
+                    <div class="w-full md:w-1/2 px-3">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                            Prénom
+                        </label>
+                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-last-name" type="text" placeholder="Votre prénom">
                     </div>
-                    <div class="pb-3">
-                        <label for="image=">Votre photo</label>
-                        <input type="img" name="image" id="image" class="form-control" placeholder="Lien de votre photo">
+                </div>
+                <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full px-3">
+                        <label class="block uppercase  tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-picture">
+                            Photo
+                        </label>
+                        <input class="w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-picture" type="file" placeholder="Lien vers votre photo" accept="image/png, image/jpeg">
                     </div>
-                    <div class="pb-3">
-                        <label for="licence">Numéro de licence</label>
-                        <input type="text" name="licence" id="licence" class="form-control" placeholder="Numéro de licence">
+       
+                </div>
+                <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full md:w-1/2 px-3">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-license-number">
+                            Numéro de licence
+                        </label>
+                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-license-number" type="text" placeholder="Format : (00000AA)">
                     </div>
-                    <div class="pb-3">
-                        <label for="birthday-date">Date de naissance</label>
-                        <input type="date" name="birthday-date" id="birthday-date" class="form-control" placeholder="Date de naissance">
+                    <div class="w-full md:w-1/2 px-3">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-birthday">
+                            Date de naissance
+                        </label>
+                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-birthday" type="date" >
+                    </div>  
+                </div>
+                <div class="flex flex-wrap -mx-3 mb-6">
+                    <div class="w-full md:w-1/2 px-3    ">
+                        <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-weight">
+                            POIDS (en KG)
+                        </label>
+                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-weight" type="number" min="40" max="150"value="60" >
                     </div>
-                    <div class="pb-3">
-                        <label for="height">Taille</label>
-                        <input type="text" name="height" id="height" class="form-control" placeholder="Taille du joueur">
-                    </div>
-                    <div class="pb-3">
-                        <label for="weight">Poids</label>
-                        <input type="text" name="weight" id="weight" class="form-control" placeholder="Poids du joueur">
-                    </div>
-                    <div class="pb-3">
-                        <label for="favorite-position">Poste préféré</label>
-                        <input type="text" name="favorite-position" id="favorite-position" class="form-control" placeholder="Poste préféré">
-                    </div>
-                    <div class="pb-3">
-                        <label for="comment>">Commentaire</label>
-                        <input type="text" name="comment" id="comment" class="form-control" placeholder="Commentaire">
-                    </div>
-                    <div class="pb-3">
-                        <label for="statut =">Statut</label>
-                        <input type="text" name="statut" id="statut" class="form-control" placeholder="Statut">
-                    </div>
-                    <div class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-                        <button type="submit" class="btn btn-primary">Ajouter</button>
-                    </div>
-                </div>  
+                    <div class="w-full md:w-1/2 px-3">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-size">
+                            Taille (en cm)
+                        </label>
+                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-size" type="number" min="130" max="22s0"value="170" >
+                    </div>  
+                </div>
+                <div class="flex items-center justify-center">
+                    <button class="bg-red-600 hover:bg-red-400 text-white font-bold py-2 px-4 rounded mr-4">
+                        Retour
+                    </button>
+                    <button class="bg-purple-800 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded ml-4">
+                        Ajouter
+                    </button>
+                </div>
+            </form>
         </section>
     </main>
 </body>
+
 </html>
