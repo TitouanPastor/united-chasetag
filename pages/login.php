@@ -10,25 +10,53 @@
 </head>
 
 <body>
+
+    <?php
+    // On démarre la session
+    session_start();
+
+    // On détruit les variables de notre session (déconnection de l'utilisateur)
+    $_SESSION['email'] = '';
+
+    // On initialise les variables
+    $info_login = '';
+
+    // Traitement du formulaire
+    if (isset($_POST['submit'])) {
+        if (!empty($_POST['email']) && !empty($_POST['password'])) {
+            if ($_POST['email'] == 'chasetag@gmail.com' && $_POST['password'] == 'chasetag') {
+                $_SESSION['email'] = $_POST['email'];
+                header('Location: ../index.php');
+            } else {
+                $info_login = 'Identifiants incorrects';
+            }
+        } else {
+            $info_login = 'Veuillez remplir tous les champs';
+        }
+    }
+
+    ?>
+
     <main class="w-screen h-screen flex items-center justify-center">
-        <section class="flex w-[800px] h-96 border-slate-200 border-[1px] rounded">
-            <div class="flex flex-col items-center text-center justify-center w-1/2 h-full bg-gradient-to-br from-violet-700 to-violet-900">
+        <section class="flex w-[800px] h-96 border-2 border-purple-800 rounded">
+            <div class="flex flex-col items-center text-center justify-center w-1/2 h-full bg-gradient-to-br from-violet-700 to-violet-900 scale-[100.5%]">
                 <img class="w-44" src="../img/team-logo.png" alt="Logo United">
                 <span class="text-white text-3xl">United Chasetag</span>
             </div>
             <form action="login.php" method="POST" class="flex flex-col items-center justify-center w-full h-full pt-10">
-                    <h1 class="text-4xl font-medium">Se connecter</h1>
+                <h1 class="text-4xl font-bold">Connexion</h1>
                 <div class="flex flex-col items-center justify-center w-full h-full">
                     <div class="flex flex-col">
                         <label for="email">Email</label>
-                        <input type="email" name="email" id="email" class="border-slate-200 border-[1px] rounded p-2 w-60">
+                        <input type="email" name="email" id="email" class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border-purple-800" id="grid-first-name" type="text" placeholder="Email">
                     </div>
                     <div class="flex flex-col pt-4">
                         <label for="password">Mot de passe</label>
-                        <input type="password" name="password" id="password" class="border-slate-200 border-[1px] rounded p-2 w-60">
+                        <input type="password" name="password" id="password" class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border-purple-800" id="grid-first-name" type="text" placeholder="Mot de passe">
                     </div>
+                    <span><?php echo $info_login ?></span>
                     <div class="flex flex-col pt-10">
-                        <button type="submit" class="w-fit bg-violet-700 transition-colors p-2 rounded hover:bg-violet-800 text-white text-lg">Se connecter</button>
+                        <input type="submit" name="submit" class="w-fit bg-violet-700 transition-colors p-2 rounded hover:bg-violet-800 text-white text-lg" value="Se connecter">
                     </div>
                 </div>
             </form>
