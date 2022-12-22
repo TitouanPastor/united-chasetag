@@ -9,72 +9,105 @@
     <title>Ajouter un joueur</title>
 </head>
 
+<?php
+require_once('player.php');
+$player = new Player();
+if (isset($_POST["add"])) {
+    echo "ko";
+    if (!empty($_POST['name']) && !empty($_POST['lastname']) && !empty($_POST['picture']) && !empty($_POST['license']) && !empty($_POST['birthday']) && !empty($_POST['weight']) && !empty($_POST['size'])) {
+
+        $player->addPlayer($_POST['name'], $_POST['lastname'], $_POST['picture'], $_POST['license'], $_POST['birthday'], $_POST['weight'], $_POST['size']);
+    }
+}
+
+?>
+
 <body>
     <main>
-        <section class="addPlayer-contains grid h-screen place-items-center">
-            <h2 class="text-4xl font-bold dark:text-dark h-0">Ajouter un joueur</h2>
-            <form class="w-full max-w-lg">
-                
-                <div class="flex flex-wrap -mx-3 mb-6">
-                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                            Nom
-                        </label>
-                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-black-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border-purple-800" id="grid-first-name" type="text" placeholder="Votre nom">
+        <section class="grid place-items-center mx-10">
+            <div class="my-6 px-9  border-2 border-purple-800 rounded ">
+                <h2 class="m-5 text-4xl font-bold text-center">Ajouter un joueur</h2>
+                <form class="block w-full max-w-lg mb-10" action="addPlayer.php" method="post">
+
+                    <div class="flex flex-wrap -mx-3 mb-6">
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+                                Nom
+                            </label>
+                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-black-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border-purple-800" id="grid-first-name" name="name" type="text" placeholder="Votre nom">
+                        </div>
+                        <div class="w-full md:w-1/2 px-3">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                                Prénom
+                            </label>
+                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-last-name" name="lastname" type="text" placeholder="Votre prénom">
+                        </div>
                     </div>
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
-                            Prénom
-                        </label>
-                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-last-name" type="text" placeholder="Votre prénom">
+                    <div class="flex flex-wrap -mx-3 mb-6">
+                        <div class="w-full px-3">
+                            <label class="block uppercase  tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-picture">
+                                Photo
+                            </label>
+                            <input class="w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-picture" name="picture" type="file" placeholder="Lien vers votre photo" accept="image/png, image/jpeg">
+                        </div>
+
                     </div>
-                </div>
-                <div class="flex flex-wrap -mx-3 mb-6">
-                    <div class="w-full px-3">
-                        <label class="block uppercase  tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-picture">
-                            Photo
-                        </label>
-                        <input class="w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-picture" type="file" placeholder="Lien vers votre photo" accept="image/png, image/jpeg">
+                    <div class="flex flex-wrap -mx-3 mb-6">
+                        <div class="w-full md:w-1/2 px-3">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-license-number">
+                                Numéro de licence
+                            </label>
+                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-license-number" name="license" type="text" placeholder="Format : (00000AA)">
+                        </div>
+                        <div class="w-full md:w-1/2 px-3">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-birthday">
+                                Date de naissance
+                            </label>
+                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-birthday" name="birthday" type="date">
+                        </div>
                     </div>
-       
-                </div>
-                <div class="flex flex-wrap -mx-3 mb-6">
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-license-number">
-                            Numéro de licence
-                        </label>
-                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-license-number" type="text" placeholder="Format : (00000AA)">
+                    <div class="flex flex-wrap -mx-3 mb-6">
+                        <div class="w-full md:w-1/2 px-3    ">
+                            <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-weight">
+                                POIDS (en KG)
+                            </label>
+                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-weight" name="weight" type="number" min="40" max="150" value="60">
+                        </div>
+                        <div class="w-full md:w-1/2 px-3">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-size">
+                                Taille (en cm)
+                            </label>
+                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-size" name="size" type="number" min="130" max="22s0" value="170">
+                        </div>
                     </div>
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-birthday">
-                            Date de naissance
-                        </label>
-                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-birthday" type="date" >
-                    </div>  
-                </div>
-                <div class="flex flex-wrap -mx-3 mb-6">
-                    <div class="w-full md:w-1/2 px-3    ">
-                        <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-weight">
-                            POIDS (en KG)
-                        </label>
-                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-weight" type="number" min="40" max="150"value="60" >
+                    <div class="flex flex-wrap -mx-3 mb-6">
+
+
+                        <div class="w-full px-3">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-favorite_position">
+                                Poste préféré
+                            </label>
+                            <div class="relative">
+                                <select class="block w-full bg-gray-200 border  text-gray-700 border-purple-800 rounded  py-3 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-favorite_position" name="position">
+                                    <option value="0">Chat</option>
+                                    <option value="1">Souris</option>
+
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-size">
-                            Taille (en cm)
-                        </label>
-                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-size" type="number" min="130" max="22s0"value="170" >
-                    </div>  
-                </div>
-                <div class="flex items-center justify-center">
-                    <button class="bg-red-600 hover:bg-red-400 text-white font-bold py-2 px-4 rounded mr-4">
-                        Retour
-                    </button>
-                    <button class="bg-purple-800 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded ml-4">
-                        Ajouter
-                    </button>
-                </div>
-            </form>
+
+                    <div class="flex items-center justify-center">
+                        <button class="bg-red-600 hover:bg-red-400 text-white font-bold py-3 px-6 rounded ml-1 mr-4" name="return">
+                            Retour
+                        </button>
+                        <button class="bg-purple-800 hover:bg-purple-500 text-white font-bold py-3 px-6 rounded ml-4" name="add">
+                            Ajouter
+                        </button>
+                    </div>
+
+                </form>
+            </div>
         </section>
     </main>
 </body>

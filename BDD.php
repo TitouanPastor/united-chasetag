@@ -1,7 +1,7 @@
 <?php
 
     class connectBDD{
-        private $kinkpdo;
+        private $linkpdo;
 
         public function __construct(){
         ///Connexion au serveur MySQL avec PDO
@@ -13,14 +13,20 @@
         try {
             $this->linkpdo = new PDO("mysql:host=$server;dbname=$db", $login, $mdp);
             $this->linkpdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            echo 'Connexion reussi !';
+            
         }
         ///Capture des erreurs éventuelles
         catch (Exception $e) {
             die('Erreur : ' . $e->getMessage());
         }
+        }
 
+        public function getConnection(){
+            return $this->linkpdo;
+        }
 
+        public function closeConnection(){
+            $this->linkpdo = null;
         }
     }
 
