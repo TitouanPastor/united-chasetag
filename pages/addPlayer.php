@@ -12,11 +12,28 @@
 <?php
 require_once('player.php');
 $player = new Player();
+$msg_error = "";
 if (isset($_POST["add"])) {
-    echo "ko";
-    if (!empty($_POST['name']) && !empty($_POST['lastname']) && !empty($_POST['picture']) && !empty($_POST['license']) && !empty($_POST['birthday']) && !empty($_POST['weight']) && !empty($_POST['size'])) {
-
-        $player->addPlayer($_POST['name'], $_POST['lastname'], $_POST['picture'], $_POST['license'], $_POST['birthday'], $_POST['weight'], $_POST['size']);
+    //Tout les champs sont remplis
+    if (!empty($_POST['name']) && !empty($_POST['lastname']) && !empty($_POST['picture']) && !empty($_POST['license']) && !empty($_POST['birthday']) && !empty($_POST['weight']) && !empty($_POST['size']) && !empty($_POST['position'])) {
+        //Format de la licence incorrect (00000AA)
+          if (preg_match('/^[0-9]{5}[A-Z]{2}$/', $_POST['license'])) {                            
+            //Date supérieur à 18 ans
+            if (date_diff(date_create($_POST['birthday']), date_create('today'))->y >= 18) {
+                //Joueur deja existant 
+                if (!$player->playerExist($_POST['license'], $_POST['name'], $_POST['lastname'])) {
+                    $player->addPlayer($_POST['name'], $_POST['lastname'], $_POST['picture'], $_POST['license'], $_POST['birthday'], $_POST['weight'], $_POST['size'], $_POST['position']);
+                }else{
+                    $msg_error = "Joueur déjà existant";
+                }
+            }else{
+                $msg_error = "Le joueur doit avoir plus de 18 ans";
+            }
+        }else{
+            $msg_error = "Format de la licence incorrect (00000AA)";
+        }
+    }else{
+        $msg_error = "Veuillez remplir tous les champs";
     }
 }
 
@@ -24,6 +41,22 @@ if (isset($_POST["add"])) {
 
 <body>
     <main>
+            <!-- Navbar latérale -->
+            <nav class="flex flex-col justify-between w-60 h-screen fixed bg-gradient-to-br from-violet-700 to-violet-900 text-white border-slate-500 border-r-[1px]">
+            <div class="flex items-center">
+                <img class="w-24" src="img/team-logo.png" alt="Logo United">
+                <span class="text-2xl">United Chasetag</span>
+            </div>
+            <ul class="flex justify-start h-full p-4 pt-32 flex-col leading-10 text-lg">
+                <li><a href="pages/members.php" class="hover:underline inline-flex w-full">Effectif</a></li>
+                <li><a href="addPlayer.php" class="hover:underline inline-flex w-full">Ajouter un joueur</a></li>
+                <li><a href="pages/matchs.php" class="hover:underline inline-flex w-full">Matchs</a></li>
+                <li><a href="pages/addMatch.php" class="hover:underline inline-flex w-full">Ajouter un match</a></li>
+            </ul>
+            <div class="flex flex-col p-4">
+                <a href="pages/login.php" class="w-fit bg-violet-700 transition-colors p-2 rounded hover:bg-violet-800">Se déconnecter</a>
+            </div>
+        </nav>
         <section class="grid place-items-center mx-10">
             <div class="my-6 px-9  border-2 border-purple-800 rounded ">
                 <h2 class="m-5 text-4xl font-bold text-center">Ajouter un joueur</h2>
@@ -89,8 +122,8 @@ if (isset($_POST["add"])) {
                             </label>
                             <div class="relative">
                                 <select class="block w-full bg-gray-200 border  text-gray-700 border-purple-800 rounded  py-3 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-favorite_position" name="position">
-                                    <option value="0">Chat</option>
-                                    <option value="1">Souris</option>
+                                    <option value="Chat">Chat</option>
+                                    <option value="Souris">Souris</option>
 
                                 </select>
                             </div>
@@ -104,8 +137,11 @@ if (isset($_POST["add"])) {
                         <button class="bg-purple-800 hover:bg-purple-500 text-white font-bold py-3 px-6 rounded ml-4" name="add">
                             Ajouter
                         </button>
+                        
                     </div>
-
+                    <div class="flex items-center justify-center ">
+                        <span class="pt-5"><?php echo $msg_error; ?> </span>  
+                    </div>
                 </form>
             </div>
         </section>
