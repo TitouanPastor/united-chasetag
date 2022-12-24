@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Se connecter - United Chasetag</title>
+    <title>Se connecter - U N I T E D</title>
     <link rel="stylesheet" href="../dist/output.css">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 </head>
 
 <body>
@@ -55,8 +56,9 @@
                         <input type="password" name="password" id="password" class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border-purple-800" id="grid-first-name" type="text" placeholder="Mot de passe">
                     </div>
                     <span><?php echo $info_login ?></span>
-                    <div class="flex flex-col pt-10">
-                        <input type="submit" name="submit" class="w-fit bg-violet-700 transition-colors p-2 rounded hover:bg-violet-800 text-white text-lg" value="Se connecter">
+                    <div class="min-h-min flex items-center gap-2 mt-10 bg-violet-700 transition-colors p-2 rounded hover:bg-violet-800 text-white text-lg">
+                        <i class="flex fi fi-rr-sign-in-alt"></i>
+                        <input type="submit" name="submit" class="w-fit" value="Se connecter">
                     </div>
                 </div>
             </form>

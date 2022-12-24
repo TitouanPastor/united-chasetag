@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../dist/output.css" rel="stylesheet">
-    <title>Ajouter un joueur</title>
+    <title>Ajouter un joueur - U N I T E D</title>
 </head>
 
 <?php
@@ -17,22 +17,22 @@ if (isset($_POST["add"])) {
     //Tout les champs sont remplis
     if (!empty($_POST['name']) && !empty($_POST['lastname']) && !empty($_POST['picture']) && !empty($_POST['license']) && !empty($_POST['birthday']) && !empty($_POST['weight']) && !empty($_POST['size']) && !empty($_POST['position'])) {
         //Format de la licence incorrect (00000AA)
-          if (preg_match('/^[0-9]{5}[A-Z]{2}$/', $_POST['license'])) {                            
+        if (preg_match('/^[0-9]{5}[A-Z]{2}$/', $_POST['license'])) {
             //Date supérieur à 18 ans
             if (date_diff(date_create($_POST['birthday']), date_create('today'))->y >= 18) {
                 //Joueur deja existant 
                 if (!$player->playerExist($_POST['license'], $_POST['name'], $_POST['lastname'])) {
                     $player->addPlayer($_POST['name'], $_POST['lastname'], $_POST['picture'], $_POST['license'], $_POST['birthday'], $_POST['weight'], $_POST['size'], $_POST['position']);
-                }else{
+                } else {
                     $msg_error = "Joueur déjà existant";
                 }
-            }else{
+            } else {
                 $msg_error = "Le joueur doit avoir plus de 18 ans";
             }
-        }else{
+        } else {
             $msg_error = "Format de la licence incorrect (00000AA)";
         }
-    }else{
+    } else {
         $msg_error = "Veuillez remplir tous les champs";
     }
 }
@@ -41,23 +41,24 @@ if (isset($_POST["add"])) {
 
 <body>
     <main>
-            <!-- Navbar latérale -->
-            <nav class="flex flex-col justify-between w-60 h-screen fixed bg-gradient-to-br from-violet-700 to-violet-900 text-white border-slate-500 border-r-[1px]">
-            <div class="flex items-center">
-                <img class="w-24" src="img/team-logo.png" alt="Logo United">
+        <!-- Navbar latérale -->
+        <nav class="flex flex-col justify-between w-60 h-screen fixed bg-gradient-to-br from-violet-700 to-violet-900 text-white border-slate-500 border-r-[1px]">
+            <div class="mx-4 flex items-center border-b border-purple-50 border-opacity-25">
+                <img class="w-24" src="../img/team-logo.png" alt="Logo United">
                 <span class="text-2xl">United Chasetag</span>
             </div>
-            <ul class="flex justify-start h-full p-4 pt-32 flex-col leading-10 text-lg">
-                <li><a href="pages/members.php" class="hover:underline inline-flex w-full">Effectif</a></li>
-                <li><a href="addPlayer.php" class="hover:underline inline-flex w-full">Ajouter un joueur</a></li>
-                <li><a href="pages/matchs.php" class="hover:underline inline-flex w-full">Matchs</a></li>
-                <li><a href="pages/addMatch.php" class="hover:underline inline-flex w-full">Ajouter un match</a></li>
+            <ul class="flex justify-start h-full pt-32 flex-col leading-10 text-lg">
+                <li class="pl-4 py-2 flex gap-2 items-center hover:bg-violet-700cursor-pointer hover:border-l-2"><i class="flex fi fi-rr-users-alt"></i></i><a href="displayPlayers.php" class="inline-flex w-full">Effectif</a></li>
+                <li class="pl-4 py-2 flex gap-2 items-center hover:bg-violet-700 cursor-pointer hover:border-l-2"><i class="flex fi fi-rr-user-add"></i><a href="addPlayer.php" class="inline-flex w-full">Ajouter un joueur</a></li>
+                <li class="pl-4 py-2 flex gap-2 items-center hover:bg-violet-700 cursor-pointer hover:border-l-2"><i class="flex fi fi-rr-trophy"></i><a href="matchs.php" class="inline-flex w-full">Matchs</a></li>
+                <li class="pl-4 py-2 flex gap-2 items-center hover:bg-violet-700 cursor-pointer hover:border-l-2"><i class="flex fi fi-rr-add-document"></i><a href="addMatch.php" class="inline-flex w-full">Ajouter un match</a></li>
             </ul>
-            <div class="flex flex-col p-4">
-                <a href="pages/login.php" class="w-fit bg-violet-700 transition-colors p-2 rounded hover:bg-violet-800">Se déconnecter</a>
+            <div class="mx-4 flex items-center justify-center p-4 border-t border-purple-50 border-opacity-25">
+                <a href="pages/login.php" class="flex items-center gap-2 w-fit bg-violet-700 transition-colors p-2 rounded hover:bg-violet-800"><i class="flex fi fi-rr-exit"></i>Se déconnecter</a>
             </div>
         </nav>
-        <section class="grid place-items-center mx-10">
+
+        <section class="h-screen flex items-center justify-center mx-10">
             <div class="my-6 px-9  border-2 border-purple-800 rounded ">
                 <h2 class="m-5 text-4xl font-bold text-center">Ajouter un joueur</h2>
                 <form class="block w-full max-w-lg mb-10" action="addPlayer.php" method="post">
@@ -137,10 +138,10 @@ if (isset($_POST["add"])) {
                         <button class="bg-purple-800 hover:bg-purple-500 text-white font-bold py-3 px-6 rounded ml-4" name="add">
                             Ajouter
                         </button>
-                        
+
                     </div>
                     <div class="flex items-center justify-center ">
-                        <span class="pt-5"><?php echo $msg_error; ?> </span>  
+                        <span class="pt-5"><?php echo $msg_error; ?> </span>
                     </div>
                 </form>
             </div>
