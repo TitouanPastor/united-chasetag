@@ -52,7 +52,10 @@
                 //On ajoute le match
                 $match->addMatch($_POST["date"], $_POST["hour"], $_POST["opponents"], $_POST["location"]);
                 $msg_error = "Le match a bien été ajouté";
-                header("Location: selectionMatch.php");
+                $idMatch = $match->getIdMatch($_POST["date"], $_POST["hour"]);
+                //On crypte l'id du match pour le passer en paramètre dans l'url
+                $idMatchencode = openssl_encrypt($idMatch, 'AES-256-CBC', 'titi');
+                header("Location: matchSelection.php?id=$idMatchencode");
             }
         } else {
             $msg_error = "Tous les champs doivent être remplis";
@@ -69,9 +72,9 @@
                 <span class="text-2xl">United Chasetag</span>
             </div>
             <ul class="flex justify-start h-full pt-32 flex-col leading-10 text-lg">
-                <li class="pl-4 py-2 flex gap-2 items-center hover:bg-violet-700cursor-pointer hover:border-l-2"><i class="flex fi fi-rr-users-alt"></i></i><a href="displayPlayers.php" class="inline-flex w-full">Effectif</a></li>
+                <li class="pl-4 py-2 flex gap-2 items-center hover:bg-violet-700 cursor-pointer hover:border-l-2"><i class="flex fi fi-rr-users-alt"></i></i><a href="displayPlayers.php" class="inline-flex w-full">Effectif</a></li>
                 <li class="pl-4 py-2 flex gap-2 items-center hover:bg-violet-700 cursor-pointer hover:border-l-2"><i class="flex fi fi-rr-user-add"></i><a href="addPlayer.php" class="inline-flex w-full">Ajouter un joueur</a></li>
-                <li class="pl-4 py-2 flex gap-2 items-center hover:bg-violet-700 cursor-pointer hover:border-l-2"><i class="flex fi fi-rr-trophy"></i><a href="matchs.php" class="inline-flex w-full">Matchs</a></li>
+                <li class="pl-4 py-2 flex gap-2 items-center hover:bg-violet-700 cursor-pointer hover:border-l-2"><i class="flex fi fi-rr-trophy"></i><a href="displayMatchs.php" class="inline-flex w-full">Matchs</a></li>
                 <li class="pl-4 py-2 flex gap-2 items-center hover:bg-violet-700 cursor-pointer hover:border-l-2"><i class="flex fi fi-rr-add-document"></i><a href="addMatch.php" class="inline-flex w-full">Ajouter un match</a></li>
             </ul>
             <div class="mx-4 flex items-center justify-center p-4 border-t border-purple-50 border-opacity-25">
@@ -123,7 +126,6 @@
                         <button class="bg-purple-800 hover:bg-purple-500 text-white font-bold py-3 px-6 rounded ml-4" name="add">
                             Ajouter
                         </button>
-
                     </div>
                     <div class="flex items-center justify-center ">
                         <span class="pt-5"><?php echo $msg_error; ?> </span>

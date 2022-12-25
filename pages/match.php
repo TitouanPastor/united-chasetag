@@ -3,14 +3,18 @@
 class Matchs
 {
     private $sql;
+    private $player;
 
     public function __construct()
     {
         require_once('../BDD.php');
         $this->sql = new connectBDD();
+        require_once('Player.php');
+        $this->player = new Player();
     }
 
-    public function addMatch($date, $hour, $opponents, $location) {
+    public function addMatch($date, $hour, $opponents, $location)
+    {
         $sql = $this->sql->getConnection();
         $req = $sql->prepare('INSERT INTO Game VALUES (null, :date, :hour, :opponents, :location, null)');
         $req->execute(array(
@@ -18,6 +22,17 @@ class Matchs
             'hour' => $hour,
             'opponents' => $opponents,
             'location' => $location
+        ));
+    }
+
+    public function addMatchPlayer($id_match, $id_player, $role)
+    {
+        $sql = $this->sql->getConnection();
+        $req = $sql->prepare('INSERT INTO Participer VALUES (:id_player, :id_match, :role, null)');
+        $req->execute(array(
+            'id_match' => $id_match,
+            'id_player' => $id_player,
+            'role' => $role
         ));
     }
 
@@ -36,51 +51,66 @@ class Matchs
         return false;
     }
 
-    public function displayAMatch($date, $hour, $team1, $team2, $score1, $score2, $place, $comment)
+    public function getIdMatch($date, $hour)
     {
-        if ($comment == null){
-            $comment = "Aucun commentaire";
-        }
-        return '<li class="pb-3 sm:pb-4" >
-            <div class="flex items center space-x-4 my-4">
-                <div class="flex-shrink-0">
-                    <div class="relative">
-                        <div class="absolute inset-0 flex items-center" aria-hidden="true">
-                            <div class="w-full border-t border-gray-300"></div>
-                        </div>
-                        <div class="relative flex justify-center">
-                            <span class="px-3 bg-white text-lg font-medium text-gray-900">
-                                ' . $date . '
-                            </span>
-                        </div>
+        $sql = $this->sql->getConnection();
+        $req = $sql->prepare('SELECT id_game FROM Game WHERE date_match = :date AND heure_match = :hour');
+        $req->execute(array(
+            'date' => $date,
+            'hour' => $hour
+        ));
+        $id = $req->fetch();
+        return $id['id_game'];
+    }
+
+    public function getMatchInfos($id)
+    {
+        $sql = $this->sql->getConnection();
+        $req = $sql->prepare('SELECT date_match, heure_match, nom_eq_adv FROM Game WHERE id_game = :id');
+        $req->execute(array(
+            'id' => $id
+        ));
+        $infos = $req->fetch();
+        return 'Le ' . date('d/m/Y', strtotime($infos['date_match'])) . ' à ' . date('H:i', strtotime($infos['heure_match'])) . ' contre ' . $infos['nom_eq_adv'];
+    }
+
+    public function displayAMatch($id, $date, $hour, $opponents, $location)
+    {
+        $display = '
+        <div class="w-1/4 border border-black h-auto rounded">
+                <div class="flex flex-col justify-between py-4 h-full">
+                    <div class="flex flex-col border-b border-black pb-4">
+                        <span class="text-sm px-4">'.date('d/m/Y',strtotime($date)).' à '.date('H:i',strtotime($hour)).'</span>
+                        <span class="text-2xl font-medium px-4">'.$location.'</span>
+                        <span class="text-xl font-medium px-4">United / '.$opponents.'</span>
                     </div>
-                </div>
-                <div class="min-w-0 flex-1">
-                    <div class="text-sm font-medium text-gray-900">
-                        ' . $team1 . ' VS ' . $team2 . '
+                    <div class="border-b border-black h-full">
+                        <ul class="p-4">';
+
+        $display .= $this->player->displayPlayersFromMatch($id);
+        
+        
+        $display .= '
+                        </ul>
                     </div>
-                    <div class="text-sm text-gray-500">
-                        ' . $hour . ' - ' . $place . '
-                    </div>
-                    <div class="text-sm text-gray-500">
-                        ' . $score1 . ' - ' . $score2 . '
-                    </div>
-                    <div class="text-sm text-gray-500">
-                        ' . $comment . '
+                    <div class="w-full flex items-center justify-evenly pt-4 ">
+                        <a class="px-4 font-medium" href="">Modifier</a>
+                        <a class="px-4 font-medium" href="">Supprimer</a>
                     </div>
                 </div>
             </div>
-        </li>';
+        ';
+        return $display;
     }
     public function displayAllMatchs()
     {
         $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT * FROM Matchs');
+        $req = $sql->prepare('SELECT * FROM Game ORDER BY date_match');
         $req->execute();
         $matchs = $req->fetchAll();
         $display = "";
         foreach ($matchs as $match) {
-            $display .= $this->displayAMatch($match['date'], $match['heure'], $match['equipe1'], $match['equipe2'], $match['score1'], $match['score2'], $match['lieu'], $match['commentaire']);
+            $display .= $this->displayAMatch($match['id_game'],$match['date_match'], $match['heure_match'], $match['nom_eq_adv'], $match['lieu']);
         }
         return $display;
     }
