@@ -11,6 +11,15 @@
 </head>
 
 <?php
+
+// On démarre la session
+session_start();
+
+// On vérifie si la personne est connectée, sinon on la redirige vers la page de connexion
+if ($_SESSION['email'] == '') {
+    header('Location: login.php');
+}
+
 require_once('player.php');
 $player = new Player();
 
@@ -104,7 +113,7 @@ if (isset($_POST["edit"])) {
                 <li class="pl-4 py-2 flex gap-2 items-center hover:bg-violet-700 cursor-pointer hover:border-l-2"><i class="flex fi fi-rr-add-document"></i><a href="addMatch.php" class="inline-flex w-full">Ajouter un match</a></li>
             </ul>
             <div class="mx-4 flex items-center justify-center p-4 border-t border-purple-50 border-opacity-25">
-                <a href="pages/login.php" class="flex items-center gap-2 w-fit bg-violet-700 transition-colors p-2 rounded hover:bg-violet-800"><i class="flex fi fi-rr-exit"></i>Se déconnecter</a>
+                <a href="login.php" class="flex items-center gap-2 w-fit bg-violet-700 transition-colors p-2 rounded hover:bg-violet-800"><i class="flex fi fi-rr-exit"></i>Se déconnecter</a>
             </div>
         </nav>
         <section class="grid place-items-center mx-10">
