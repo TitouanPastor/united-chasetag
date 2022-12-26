@@ -14,10 +14,19 @@
 
     <?php
 
+    // On démarre la session
+    session_start();
+
+    // On vérifie si la personne est connectée, sinon on la redirige vers la page de connexion
+    if ($_SESSION['email'] == '') {
+        header('Location: login.php');
+    }
+
+
     $msg_error = "";
 
     // On décrypte l'id du match pour le récuperer en clair
-    $idMatch = openssl_decrypt($_GET['id'], 'AES-256-CBC', 'titi');
+    $idMatch = $_GET['id'];
     // On récupère les informations du match
     require_once('player.php');
     $player = new Player();
@@ -27,8 +36,8 @@
 
 
     if (isset($_POST["add"])) {
-        if (sizeof($_POST['playerlicense']) < 3) {
-            $msg_error .= "Veuillez sélectionner au trois un joueur";
+        if (empty($_POST['playerlicense']) || sizeof($_POST['playerlicense']) < 3) {
+            $msg_error .= "Veuillez sélectionner moins au trois joueurs";
         } else {
             foreach ($_POST['playerlicense'] as $playerlicense) {
                 $idPlayer = $player->getIdPlayer($playerlicense);
@@ -50,10 +59,10 @@
             <li class="pl-4 py-2 flex gap-2 items-center hover:bg-violet-700 cursor-pointer hover:border-l-2"><i class="flex fi fi-rr-users-alt"></i></i><a href="displayPlayers.php" class="inline-flex w-full">Effectif</a></li>
             <li class="pl-4 py-2 flex gap-2 items-center hover:bg-violet-700 cursor-pointer hover:border-l-2"><i class="flex fi fi-rr-user-add"></i><a href="addPlayer.php" class="inline-flex w-full">Ajouter un joueur</a></li>
             <li class="pl-4 py-2 flex gap-2 items-center hover:bg-violet-700 cursor-pointer hover:border-l-2"><i class="flex fi fi-rr-trophy"></i><a href="displayMatchs.php" class="inline-flex w-full">Matchs</a></li>
-            <li class="pl-4 py-2 flex gap-2 items-center hover:bg-violet-700 cursor-pointer hover:border-l-2"><i class="flex fi fi-rr-add-document"></i><a href="addMatch.php" class="inline-flex w-full">Ajouter un match</a></li>
+            <li class="pl-4 py-2 flex gap-2 items-center bg-violet-700 cursor-pointer border-l-2 font-medium"><i class="flex fi fi-rr-add-document"></i><a href="addMatch.php" class="inline-flex w-full">Ajouter un match</a></li>
         </ul>
         <div class="mx-4 flex items-center justify-center p-4 border-t border-purple-50 border-opacity-25">
-            <a href="pages/login.php" class="flex items-center gap-2 w-fit bg-violet-700 transition-colors p-2 rounded hover:bg-violet-800"><i class="flex fi fi-rr-exit"></i>Se déconnecter</a>
+            <a href="login.php" class="flex items-center gap-2 w-fit bg-violet-700 transition-colors p-2 rounded hover:bg-violet-800"><i class="flex fi fi-rr-exit"></i>Se déconnecter</a>
         </div>
     </nav>
     <main>
@@ -70,13 +79,15 @@
                     ?>
                 </ul>
                 <div class="flex items-center justify-center">
-                    <span class="pt-5"><?php echo $msg_error; ?> </span>
                     <button class="bg-red-600 hover:bg-red-400 text-white font-bold py-3 px-6 rounded ml-1 mr-4" name="return">
                         Retour
                     </button>
                     <button class="bg-purple-800 hover:bg-purple-500 text-white font-bold py-3 px-6 rounded ml-4" name="add">
                         Ajouter
                     </button>
+                </div>
+                <div class="flex items-center justify-center ">
+                    <span><?php echo $msg_error; ?> </span>
                 </div>
             </form>
         </section>
