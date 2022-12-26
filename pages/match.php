@@ -36,28 +36,28 @@ class Matchs
         ));
     }
 
-        // $sql = $this->sql->getConnection();
-        // // On vérifie si le joueur est déjà inscrit au match, et sont rôle est différent du rôle qu'on veut lui attribuer
-        // $player_is_playing_match = $this->player->playerIsPlayingAMatch($id_match, $id_player);
-        // if ($player_is_playing_match == "titulaire" || $player_is_playing_match == "remplaçant") {
-        //     if ($player_is_playing_match != $role) {
-        //         // Si oui, on met à jour son rôle
-        //         $req = $sql->prepare('UPDATE Participer SET role = :role WHERE id_joueur = :id_player AND id_game = :id_match');
-        //         $req->execute(array(
-        //             'id_match' => $id_match,
-        //             'id_player' => $id_player,
-        //             'role' => $role
-        //         ));
-        //     }
-        // } else if ($player_is_playing_match == false) {
-        //     // Sinon, on l'inscrit au match avec son rôle
-        //     $req = $sql->prepare('INSERT INTO Participer VALUES (:id_player, :id_match, :role, null)');
-        //     $req->execute(array(
-        //         'id_match' => $id_match,
-        //         'id_player' => $id_player,
-        //         'role' => $role
-        //     ));
-        // }
+    // $sql = $this->sql->getConnection();
+    // // On vérifie si le joueur est déjà inscrit au match, et sont rôle est différent du rôle qu'on veut lui attribuer
+    // $player_is_playing_match = $this->player->playerIsPlayingAMatch($id_match, $id_player);
+    // if ($player_is_playing_match == "titulaire" || $player_is_playing_match == "remplaçant") {
+    //     if ($player_is_playing_match != $role) {
+    //         // Si oui, on met à jour son rôle
+    //         $req = $sql->prepare('UPDATE Participer SET role = :role WHERE id_joueur = :id_player AND id_game = :id_match');
+    //         $req->execute(array(
+    //             'id_match' => $id_match,
+    //             'id_player' => $id_player,
+    //             'role' => $role
+    //         ));
+    //     }
+    // } else if ($player_is_playing_match == false) {
+    //     // Sinon, on l'inscrit au match avec son rôle
+    //     $req = $sql->prepare('INSERT INTO Participer VALUES (:id_player, :id_match, :role, null)');
+    //     $req->execute(array(
+    //         'id_match' => $id_match,
+    //         'id_player' => $id_player,
+    //         'role' => $role
+    //     ));
+    // }
 
     public function dropMatchAllPlayers($id_match)
     {
@@ -68,7 +68,8 @@ class Matchs
         ));
     }
 
-    public function dropMatch($id_match) {
+    public function dropMatch($id_match)
+    {
         $sql = $this->sql->getConnection();
         // On drop tout les joueurs du match
         $this->dropMatchAllPlayers($id_match);
@@ -162,10 +163,15 @@ class Matchs
                         <span class="px-4 font-medium">' . $score_equipe . ' - ' . $score_adv . '</span>
                     </div>';
         }
+        //On crypte l'id du match pour le passer en paramètre dans l'url
+        $idMatchencode = openssl_encrypt($id, "aes-256-ecb", "toto");
+        // On l'encode en base64 pour éviter les problèmes d'encodage
+        $idMatchencode = base64_encode($idMatchencode);
+
         $display .= '
                     <div class="w-full flex items-center justify-evenly pt-4 ">
-                        <a class="px-4 font-medium" href="editMatch.php?id=' . $id . '">Modifier</a>
-                        <a class="px-4 font-medium" href="displayMatchs.php?id_del='. $id .'">Supprimer</a>
+                        <a class="px-4 font-medium" href="editMatch.php?id=' . $idMatchencode . '">Modifier</a>
+                        <a class="px-4 font-medium" href="displayMatchs.php?id_del=' . $idMatchencode . '">Supprimer</a>
                     </div>
                 </div>
             </div>

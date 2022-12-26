@@ -62,7 +62,9 @@
                 $msg_error = "Le match a bien été ajouté";
                 $idMatch = $match->getIdMatch($_POST["date"], $_POST["hour"]);
                 //On crypte l'id du match pour le passer en paramètre dans l'url
-                $idMatchencode = $idMatch;
+                $idMatchencode = openssl_encrypt($idMatch, "AES-128-CTR", "titi");
+                // On l'encode en base64 pour éviter les problèmes d'encodage
+                $idMatchencode = base64_encode($idMatchencode);
                 header("Location: matchSelection.php?id=$idMatchencode");
             }
         } else {

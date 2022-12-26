@@ -24,7 +24,8 @@
 
 
     //On decrypte l'id du match pour récupérer l'id du match
-    $idMatch = $_GET["id"];
+    $idMatch = base64_decode($_GET['id']);
+    $idMatch = openssl_decrypt($idMatch, "aes-256-ecb", "toto");
 
     // Restriction de la date de saisie à la date du jour + 1 semaine
     // Obtenir la date du jour

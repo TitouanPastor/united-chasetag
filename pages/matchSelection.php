@@ -26,7 +26,8 @@
     $msg_error = "";
 
     // On décrypte l'id du match pour le récuperer en clair
-    $idMatch = $_GET['id'];
+    $idMatch = base64_decode($_GET['id']);
+    $idMatch = openssl_decrypt($idMatch, "AES-128-CTR", "titi");
     // On récupère les informations du match
     require_once('player.php');
     $player = new Player();
