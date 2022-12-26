@@ -74,7 +74,7 @@ class Player
                 </div>
                 <div class="inline-flex items-center text-base font-semibold text-gray-900 ">
                     <a href="editPlayer.php?id='.$id.'" class="p-2"> MODIFIER </a> 
-                    <button type="submit" name="delete"><a href="displayPlayers.php?id='.$id.'" class="p-2" name="delete"> SUPPRIMER </a></button>
+                    <button type=submit" name="delete"><a href="displayPlayers.php?id='.$id.'" class="p-2" name="delete"> SUPPRIMER </a></button>
                 </div>
             </div>
         </li>';     
