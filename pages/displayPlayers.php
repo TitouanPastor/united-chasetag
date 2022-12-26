@@ -55,10 +55,10 @@
     </form>
     <?php
     require_once('player.php');
-    if (isset($_POST["delete"])){
+    if (!empty($_GET["deletePlayer"])){
         echo "ok";
         $player = new Player();
-        $player->deletePlayer($_GET['id']);
+        $player->deletePlayer($_GET['deletePlayer']);
     }
 ?>
 
