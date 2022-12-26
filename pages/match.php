@@ -13,6 +13,7 @@ class Matchs
         $this->player = new Player();
     }
 
+    // Fonction permettant d'ajouter un match avec les différents paramètres
     public function addMatch($date, $hour, $opponents, $location)
     {
         $sql = $this->sql->getConnection();
@@ -25,6 +26,7 @@ class Matchs
         ));
     }
 
+    // Fonction permettant d'ajouter un joueur à un match avec son role pendant le match
     public function addMatchPlayer($id_match, $id_player, $role)
     {
         $sql = $this->sql->getConnection();
@@ -36,29 +38,7 @@ class Matchs
         ));
     }
 
-    // $sql = $this->sql->getConnection();
-    // // On vérifie si le joueur est déjà inscrit au match, et sont rôle est différent du rôle qu'on veut lui attribuer
-    // $player_is_playing_match = $this->player->playerIsPlayingAMatch($id_match, $id_player);
-    // if ($player_is_playing_match == "titulaire" || $player_is_playing_match == "remplaçant") {
-    //     if ($player_is_playing_match != $role) {
-    //         // Si oui, on met à jour son rôle
-    //         $req = $sql->prepare('UPDATE Participer SET role = :role WHERE id_joueur = :id_player AND id_game = :id_match');
-    //         $req->execute(array(
-    //             'id_match' => $id_match,
-    //             'id_player' => $id_player,
-    //             'role' => $role
-    //         ));
-    //     }
-    // } else if ($player_is_playing_match == false) {
-    //     // Sinon, on l'inscrit au match avec son rôle
-    //     $req = $sql->prepare('INSERT INTO Participer VALUES (:id_player, :id_match, :role, null)');
-    //     $req->execute(array(
-    //         'id_match' => $id_match,
-    //         'id_player' => $id_player,
-    //         'role' => $role
-    //     ));
-    // }
-
+    // Fonction qui permet de supprimer tout les joueurs participant à un match
     public function dropMatchAllPlayers($id_match)
     {
         $sql = $this->sql->getConnection();
@@ -68,6 +48,7 @@ class Matchs
         ));
     }
 
+    //  Fonction permettant de supprimer entièrement un match
     public function dropMatch($id_match)
     {
         $sql = $this->sql->getConnection();
@@ -81,6 +62,7 @@ class Matchs
     }
 
 
+    // Fonction permettant de savori si un match existe ou non
     public function matchExist($date, $hour)
     {
         $sql = $this->sql->getConnection();
@@ -96,6 +78,7 @@ class Matchs
         return false;
     }
 
+    // Fonction retournant l'id d'un match à partir de sa date et de son heure
     public function getIdMatch($date, $hour)
     {
         $sql = $this->sql->getConnection();
@@ -108,6 +91,7 @@ class Matchs
         return $id['id_game'];
     }
 
+    // Fonction retournant un match avec son id
     public function getMatch($id)
     {
         $sql = $this->sql->getConnection();
@@ -118,6 +102,7 @@ class Matchs
         return $req;
     }
 
+    // Fonction permettant de retourner dans une chaine de caractères les infos d'un match
     public function getMatchInfos($id)
     {
         $sql = $this->sql->getConnection();
@@ -129,6 +114,7 @@ class Matchs
         return 'Le ' . date('d/m/Y', strtotime($infos['date_match'])) . ' à ' . date('H:i', strtotime($infos['heure_match'])) . ' contre ' . $infos['nom_eq_adv'];
     }
 
+    // Fonction permettant de retourner dans une chaine de caractères HTML les infos d'un match complètes (disponible sur la page de liste des matchs)
     public function displayAMatch($id, $date, $hour, $opponents, $location, $score_equipe, $score_adv)
     {
         $display = '
@@ -142,13 +128,14 @@ class Matchs
                     <div class="border-b border-black h-full">
                         <ul class="p-4">';
 
+        // On affiche les joeurs du match
         $display .= $this->player->displayPlayersFromMatch($id);
-
 
         $display .= '
                         </ul>
                     </div>';
 
+        // On affiche le score du match
         if ($score_equipe != null && $score_adv != null) {
             if ($score_equipe > $score_adv) {
                 $resultat = 'Victoire';
@@ -178,6 +165,8 @@ class Matchs
         ';
         return $display;
     }
+
+    // Fonction permettant d'afficher au format HTML tous les matchs
     public function displayAllMatchs()
     {
         $sql = $this->sql->getConnection();
@@ -194,6 +183,7 @@ class Matchs
         return $display;
     }
 
+    // Fonction permettant de modifier un match dans le BDD
     public function editMatch($id, $date, $hour, $opponents, $location, $score_equipe, $score_adv)
     {
         $sql = $this->sql->getConnection();

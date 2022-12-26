@@ -36,10 +36,12 @@
     $matchInfos = $match->getMatchInfos($idMatch);
 
 
+    // Cas ou l'utilisateur clique sur le bouton Ajouter
     if (isset($_POST["add"])) {
         if (empty($_POST['playerlicense']) || sizeof($_POST['playerlicense']) < 3) {
             $msg_error .= "Veuillez sélectionner moins au trois joueurs";
         } else {
+            // On ajoute les joueurs sélectionnés dans la liste
             foreach ($_POST['playerlicense'] as $playerlicense) {
                 $idPlayer = $player->getIdPlayer($playerlicense);
                 $match->addMatchPlayer($idMatch, $idPlayer, $_POST[$playerlicense]);

@@ -37,6 +37,7 @@
     // Formater la date minimale au format Y-m-d (année-mois-jour)
     $minDate = $minDate->format('Y-m-d');
 
+    // On inclut les fichiers nécessaires
     require_once('match.php');
     $match = new Matchs();
     require_once('player.php');
@@ -55,6 +56,7 @@
     }
     $hour = substr($hour, 0, 5);
 
+    // Cas ou l'utilisateur clique sur le bouton "Modifier"
     if (isset($_POST["edit"])) {
         // On vériifie que les champs ne sont pas vides
         if (empty($_POST['date']) || empty($_POST['hour']) || empty($_POST['opponents']) || empty($_POST['location'])) {
@@ -73,6 +75,7 @@
             if (sizeof($_POST['playerlicense']) < 3) {
                 $msg_error .= "Veuillez sélectionner au moins trois joueurs";
             } else {
+                // On met à jour les infos sur les jooeurs
                 $match->dropMatchAllPlayers($idMatch);
                 foreach ($_POST['playerlicense'] as $playerlicense) {
                     $idPlayer = $player->getIdPlayer($playerlicense);

@@ -22,7 +22,7 @@
         header('Location: login.php');
     }
 
-
+    // On inclut les fichiers nécessaires
     require_once('player.php');
     require_once('match.php');
     $player = new Player();
