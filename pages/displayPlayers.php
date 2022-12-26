@@ -10,6 +10,7 @@
 </head>
 
 <body>
+
     <!-- Navbar latérale -->
     <nav class="flex flex-col justify-between w-60 h-screen fixed bg-gradient-to-br from-violet-700 to-violet-900 text-white border-slate-500 border-r-[1px]">
             <div class="flex items-center">
@@ -27,17 +28,24 @@
             </div>
         </nav>
     <main>
-
-    <section class="grid place-items-center ml-72 mr-12">
-    <h2 class="m-5 text-3xl font-bold text-center">Les joueurs</h2>
-        <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <?php
-                require_once('player.php');
-                $player = new Player();
-                echo $player->displayPlayers();
-            ?>
-        </ul>
-    </section>
-
-
+    <form action="displayPlayers.php" method="post">
+        <section class="grid place-items-center ml-72 mr-12">
+        <h2 class="m-5 text-3xl font-bold text-center">Les joueurs</h2>
+            <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <?php
+                    require_once('player.php');
+                    $player = new Player();
+                    echo $player->displayPlayers();
+                ?>
+            </ul>
+        </section>
+    </form>
+    <?php
+    require_once('player.php');
+    if (isset($_POST["delete"])){
+        echo "ok";
+        $player = new Player();
+        $player->deletePlayer($_GET['id']);
+    }
+?>
 </html>
