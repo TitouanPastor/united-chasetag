@@ -30,7 +30,7 @@
     </nav>
     <main>
     <form action="displayPlayers.php" method="post">
-        <section class="grid place-items-center ml-72 mr-12">
+        <section class="grid place-items-center ml-72 mr-12">   
         <h2 class="m-5 text-3xl font-bold text-center">Les joueurs</h2>
             <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <?php
