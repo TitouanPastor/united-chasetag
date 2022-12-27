@@ -235,4 +235,14 @@ class Matchs
             'id' => $idMatch
         ));
     }
+
+    public function getMatchStatus($idMatch) {
+        $sql = $this->sql->getConnection();
+        $req = $sql->prepare('SELECT statut FROM Game WHERE id_game = :id');
+        $req->execute(array(
+            'id' => $idMatch
+        ));
+        $status = $req->fetch();
+        return $status['statut'];
+    }
 }

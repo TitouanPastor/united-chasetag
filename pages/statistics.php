@@ -2,6 +2,9 @@
 
 class Stats
 {
+    
+    private $sql;
+
     public function __construct()
     {
         require_once('../BDD.php');
@@ -66,6 +69,18 @@ class Stats
         ));
         while ($datas = $req->fetch()) {
             return $datas['average'];
+        }
+    }
+
+    public function updateStats($isWined) {
+        $req = $this->sql->getConnection()->prepare("UPDATE Club SET match_joue = match_joue + 1");
+        $req->execute();
+        if ($isWined) {
+            $req = $this->sql->getConnection()->prepare("UPDATE Club SET match_gagne = match_gagne + 1");
+            $req->execute();
+        } else {
+            $req = $this->sql->getConnection()->prepare("UPDATE Club SET match_perdu = match_perdu + 1");
+            $req->execute();
         }
     }
 }

@@ -32,6 +32,8 @@
     $match = new Matchs();
     require_once('player.php');
     $player = new Player();
+    require_once('statistics.php');
+    $statistics = new Stats();
     $msg_error = "";
 
     $matchInfos = $match->getMatchInfos($idMatch);
@@ -52,6 +54,16 @@
         // On vériifie que les champs ne sont pas vides
         if (($_POST['score_team']) != null || ($_POST['score_adv']) != null) {
             $match->editMatch($idMatch, $date, $hour, $opponents, $location, $_POST['score_team'], $_POST['score_adv']);
+            // Si le statut du match n'est pas encore en "Terminé", on le passe en "Terminé"
+            if ($match->getMatchStatus($idMatch) != 1) {
+                $match->matchToFinished($idMatch);
+                // Si United a gagné, on ajoute un match gagné
+                if ($_POST['score_team'] > $_POST['score_adv']) {
+                    $statistics->updateStats(true);
+                } else {
+                    $statistics->updateStats(false);
+                }
+            }
             $match->matchToFinished($idMatch);
             header('Location: displayMatchs.php');
         } else {
