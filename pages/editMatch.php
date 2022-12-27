@@ -29,13 +29,13 @@
 
     // Restriction de la date de saisie à la date du jour + 1 semaine
     // Obtenir la date du jour
-    $today = new DateTime();
+    // $today = new DateTime();
 
     // Ajouter une semaine à la date du jour
-    $minDate = $today->add(new DateInterval('P1W'));
+    // $minDate = $today->add(new DateInterval('P1W'));
 
     // Formater la date minimale au format Y-m-d (année-mois-jour)
-    $minDate = $minDate->format('Y-m-d');
+    // $minDate = $minDate->format('Y-m-d');
 
     // On inclut les fichiers nécessaires
     require_once('match.php');
@@ -51,8 +51,6 @@
         $hour = $data['heure_match'];
         $opponents = $data['nom_eq_adv'];
         $location = $data['lieu'];
-        $score_team = $data['score_equipe'];
-        $score_adv = $data['score_adv'];
     }
     $hour = substr($hour, 0, 5);
 
@@ -62,15 +60,8 @@
         if (empty($_POST['date']) || empty($_POST['hour']) || empty($_POST['opponents']) || empty($_POST['location'])) {
             $msg_error .= "Veuillez remplir tous les champs";
         } else {
-
-            // on modifie le match dans la base de données
-            if (($_POST['score_team']) != null || ($_POST['score_adv']) != null) {
-                $match->editMatch($idMatch, $_POST['date'], $_POST['hour'], $_POST['opponents'], $_POST['location'], $_POST['score_team'], $_POST['score_adv']);
-            } else {
-                $match->editMatch($idMatch, $_POST['date'], $_POST['hour'], $_POST['opponents'], $_POST['location'], null, null);
-            }
-
-
+            // On rentre les infos sur le match
+            $match->editMatch($idMatch, $_POST['date'], $_POST['hour'], $_POST['opponents'], $_POST['location'], null, null);
             // On s'occupe des joueurs
             if (sizeof($_POST['playerlicense']) < 3) {
                 $msg_error .= "Veuillez sélectionner au moins trois joueurs";
@@ -113,7 +104,7 @@
                 <div class="w-1/3 border-r-2 border-purple-800 pr-6">
                     <div class="flex flex-col gap-2">
                         <label for="date" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-2">Date du match</label>
-                        <input type="date" name="date" id="date" min="<?php echo $minDate; ?>" value="<?php echo $date; ?>" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-black-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border-purple-800">
+                        <input type="date" name="date" id="date" min="<?php  if ($minDate != "") echo $minDate; ?>" value="<?php echo $date; ?>" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-black-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border-purple-800">
                     </div>
                     <div class="flex flex-col gap-2">
                         <label for="hour" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-2">Heure du match</label>
@@ -126,14 +117,6 @@
                     <div class="flex flex-col gap-2">
                         <label for="location" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-2">Lieu du match</label>
                         <input type="text" name="location" id="location" value="<?php echo $location; ?>" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-black-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border-purple-800">
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <label for="score_team" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-2">Score de l'équipe</label>
-                        <input type="number" name="score_team" id="score_team" value="<?php echo $score_team; ?>" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-black-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border-purple-800" placeholder="Laisser vide si match non joué" min="0">
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <label for="score_adv" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-2">Score de l'adversaire</label>
-                        <input type="number" name="score_adv" id="score_adv" value="<?php echo $score_adv; ?>" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-black-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border-purple-800" placeholder="Laisser vide si match non joué" min="0">
                     </div>
                 </div>
                 <div class="w-2/3">

@@ -135,7 +135,7 @@ class Matchs
         }
 
         $display = '
-        <div class="w-[300px] border '.$bg_match.' border-black h-auto rounded">
+        <div class="w-[300px] border '.$bg_match.' border-black h-auto rounded hover:scale-[102%] hover:shadow-xl transition-all">
                 <div class="flex flex-col justify-between py-4 h-full">
                     <div class="flex flex-col border-b border-black pb-4">
                         <span class="text-sm px-4">' . date('d/m/Y', strtotime($date)) . ' à ' . date('H:i', strtotime($hour)) . '</span>
@@ -184,6 +184,7 @@ class Matchs
         } else {
             $display .= '
                     <div class="w-full flex items-center justify-evenly pt-4 ">
+                    <a class="px-4 font-medium" href="scoreMatch.php?id=' . $idMatchencode . '">Score</a>
                         <a class="px-4 font-medium" href="evaluateMatch.php?id=' . $idMatchencode . '">Evaluer</a>
                     </div>
                 </div>

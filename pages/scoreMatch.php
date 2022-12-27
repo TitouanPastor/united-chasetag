@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../dist/output.css" rel="stylesheet">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
-    <title>Evaluer un match - U N I T E D</title>
+    <title>Renseigner le score d'un match - U N I T E D</title>
 </head>
 
 <body>
@@ -22,30 +22,39 @@
         header('Location: login.php');
     }
 
-    // On inclut les fichiers nécessaires
-    require_once('player.php');
-    require_once('match.php');
-    $player = new Player();
-    $match = new Matchs();
-    $msg_error = "";
 
-    // On décrypte l'ID du match
+    //On decrypte l'id du match pour récupérer l'id du match
     $idMatch = base64_decode($_GET['id']);
     $idMatch = openssl_decrypt($idMatch, "aes-256-ecb", "toto");
 
-    // On récupère les informations du match
+    // On inclut les fichiers nécessaires
+    require_once('match.php');
+    $match = new Matchs();
+    require_once('player.php');
+    $player = new Player();
+    $msg_error = "";
+
     $matchInfos = $match->getMatchInfos($idMatch);
 
-    // Cas ou l'utilisateur clique sur le bouton Ajouter
-    if (isset($_POST['add'])) {
-        $tab_player_name = $player->getPlayerNameArrayFromMatch($idMatch);
-        while ($player_tab = $tab_player_name->fetch()) {
-            $player_name = $player_tab['nom'];
-            $player_license = $player_tab['numero_de_licence'];
-            $player_id = $player->getIdPlayer($player_license);
-            // On ajoute la note du joueur
-            $player->addPlayerRating($idMatch,$player_id, $_POST['rating-'.$player_name]);
+    //On récupère les informations du match
+    $p = $match->getMatch($idMatch);
+    while ($data = $p->fetch()) {
+        $date = $data['date_match'];
+        $hour = $data['heure_match'];
+        $opponents = $data['nom_eq_adv'];
+        $location = $data['lieu'];
+        $score_team = $data['score_equipe'];
+        $score_adv = $data['score_adv'];
+    }
+
+    // Cas ou l'utilisateur clique sur le bouton "Modifier"
+    if (isset($_POST["edit"])) {
+        // On vériifie que les champs ne sont pas vides
+        if (($_POST['score_team']) != null || ($_POST['score_adv']) != null) {
+            $match->editMatch($idMatch, $date, $hour, $opponents, $location, $_POST['score_team'], $_POST['score_adv']);
             header('Location: displayMatchs.php');
+        } else {
+            $msg_error = "Veuillez renseigner le score de l'équipe et de l'adversaire";
         }
     }
 
@@ -70,57 +79,34 @@
 
     <!-- Contenu de la page -->
     <main class="grid place-items-center ml-72 mr-12">
-        <h2 class="m-5 text-4xl font-bold text-center">Evaluer les joueurs</h2>
+        <h2 class="m-5 text-4xl font-bold text-center">Score du match</h2>
         <h4 class="text-2xl font-medium text-center pb-4"> <?php echo $matchInfos ?> </h4>
-        </div>
-        <form action="evaluateMatch.php?id=<?php echo $_GET['id'] ?>" method="post">
-            <ul class="p-4">
-                <?php
-
-                // On récupère les informations du match
-                echo $player->displayPlayersForEvaluation($idMatch);
-
-                ?>
-            </ul>
+        <form action="scoreMatch.php?id=<?php echo $_GET['id'] ?>" method="POST" class="flex flex-col gap-4 my-6 p-9 border-2 border-purple-800 rounded">
+            <div class="flex">
+                <div class="w-full">
+                    <div class="flex flex-col gap-2">
+                        <label for="score_team" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-2">Score de l'équipe</label>
+                        <input type="number" name="score_team" id="score_team" value="<?php echo $score_team; ?>" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-black-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border-purple-800" placeholder="Score United" min="0">
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label for="score_adv" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-2">Score de l'adversaire</label>
+                        <input type="number" name="score_adv" id="score_adv" value="<?php echo $score_adv; ?>" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-black-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border-purple-800" placeholder="Score Adversaire" min="0">
+                    </div>
+                </div>
+            </div>
             <div class="flex items-center justify-center">
                 <button class="bg-red-600 hover:bg-red-400 text-white font-bold py-3 px-6 rounded ml-1 mr-4" name="return">
                     Retour
                 </button>
-                <button class="bg-purple-800 hover:bg-purple-500 text-white font-bold py-3 px-6 rounded ml-4" name="add">
-                    Ajouter
+                <button class="bg-purple-800 hover:bg-purple-500 text-white font-bold py-3 px-6 rounded ml-4" name="edit">
+                    Ajouter le résultat
                 </button>
-
             </div>
-            <div class="flex items-center justify-center ">
-                <span class="pt-5"><?php echo $msg_error; ?> </span>
+            <div class="flex items-center justify-center">
+                <span><?php echo $msg_error; ?> </span>
             </div>
         </form>
     </main>
-
-    <script>
-        function labelClicked(label) {
-
-            // On récupère l'id du label
-            var id = label.id;
-            // On récupère la première class du label
-            var classLabel = label.classList[0];
-            // On récupère les labels précédents
-            var labels = document.querySelectorAll('.' + classLabel);
-            // On parcourt les labels précédents
-            for (var i = 0; i < labels.length; i++) {
-                // Si l'id du label précédent est inférieur à l'id du label cliqué
-                if (labels[i].id <= id) {
-                    // On ajoute la classe "text-yellow-700" à l'input
-                    labels[i].classList.add("text-yellow-500");
-                    labels[i].classList.remove("text-gray-300");
-                } else {
-                    // On ajoute la classe "text-gray-300" à l'input
-                    labels[i].classList.add("text-gray-300");
-                    labels[i].classList.remove("text-yellow-500");
-                }
-            }
-        }
-    </script>
 </body>
 
 </html>

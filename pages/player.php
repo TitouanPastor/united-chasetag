@@ -361,31 +361,31 @@ class Player
                 </div>
                 <div class="flex items-center">
                     <input class="hidden" type="radio" name="rating-' . $name . '" id="rating-1-' . $name . '" value="1" '.$isChecked1.'>
-                    <label for="rating-1-' . $name . '" class="eval-label-' . $name . ' w-6 h-6 '.$label1TextState.' hover:text-yellow-600 fill-current" onclick="labelClicked(this)" id="1">
+                    <label for="rating-1-' . $name . '" class="eval-label-' . $name . ' w-6 h-6 '.$label1TextState.' hover:text-yellow-600 fill-current cursor-pointer" onclick="labelClicked(this)" id="1">
                         <svg class="w-full" viewBox="0 0 24 24">
                             <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
                         </svg>
                     </label>
                     <input class="hidden" type="radio" name="rating-' . $name . '" id="rating-2-' . $name . '" value="2"  '.$isChecked2.'>
-                    <label for="rating-2-' . $name . '" class="eval-label-' . $name . ' w-6 h-6 '.$label2TextState.' hover:text-yellow-600 fill-current" onclick="labelClicked(this)" id="2">
+                    <label for="rating-2-' . $name . '" class="eval-label-' . $name . ' w-6 h-6 '.$label2TextState.' hover:text-yellow-600 fill-current cursor-pointer" onclick="labelClicked(this)" id="2">
                         <svg class="w-full" viewBox="0 0 24 24">
                             <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
                         </svg>
                     </label>
                     <input class="hidden" type="radio" name="rating-' . $name . '" id="rating-3-' . $name . '" value="3"  '.$isChecked3.'>
-                    <label for="rating-3-' . $name . '" class="eval-label-' . $name . ' w-6 h-6 '.$label3TextState.' hover:text-yellow-600 fill-current" onclick="labelClicked(this)" id="3">
+                    <label for="rating-3-' . $name . '" class="eval-label-' . $name . ' w-6 h-6 '.$label3TextState.' hover:text-yellow-600 fill-current cursor-pointer" onclick="labelClicked(this)" id="3">
                         <svg class="w-full" viewBox="0 0 24 24">
                             <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
                         </svg>
                     </label>
                     <input class="hidden" type="radio" name="rating-' . $name . '" id="rating-4-' . $name . '" value="4"  '.$isChecked4.'>
-                    <label for="rating-4-' . $name . '" class="eval-label-' . $name . ' w-6 h-6 '.$label4TextState.' hover:text-yellow-600 fill-current" onclick="labelClicked(this)" id="4">
+                    <label for="rating-4-' . $name . '" class="eval-label-' . $name . ' w-6 h-6 '.$label4TextState.' hover:text-yellow-600 fill-current cursor-pointer" onclick="labelClicked(this)" id="4">
                         <svg class="w-full" viewBox="0 0 24 24">
                             <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
                         </svg>
                     </label>
                     <input class="hidden" type="radio" name="rating-' . $name . '" id="rating-5-' . $name . '" value="5"  '.$isChecked5.'>
-                    <label for="rating-5-' . $name . '" class="eval-label-' . $name . ' w-6 h-6 '.$label5TextState.' hover:text-yellow-600 fill-current" onclick="labelClicked(this)" id="5">
+                    <label for="rating-5-' . $name . '" class="eval-label-' . $name . ' w-6 h-6 '.$label5TextState.' hover:text-yellow-600 fill-current cursor-pointer" onclick="labelClicked(this)" id="5">
                         <svg class="w-full" viewBox="0 0 24 24">
                             <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
                         </svg>

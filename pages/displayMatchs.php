@@ -57,8 +57,8 @@
 
     <!-- Contenu de la page -->
     <main class="grid place-items-center ml-72 mr-12">
-        <h2 class="m-5 text-3xl font-bold text-center">Liste des matchs</h2>
-        <section class="w-full flex flex-wrap justify-center gap-12">
+        <h2 class="m-5 text-3xl font-bold text-center pt-4">Liste des matchs</h2>
+        <section class="w-full flex flex-wrap justify-center gap-12 p-10">
             <?php
 
             echo $match->displayAllMatchs();
