@@ -37,13 +37,13 @@
 
     // Restriction de la date de saisie à la date du jour + 1 semaine
     // Obtenir la date du jour
-    $today = new DateTime();
+    //$today = new DateTime();
 
     // Ajouter une semaine à la date du jour
-    $minDate = $today->add(new DateInterval('P1W'));
+    //$today = $today->add(new DateInterval('P1W'));
 
     // Formater la date minimale au format Y-m-d (année-mois-jour)
-    $minDate = $minDate->format('Y-m-d');
+    //$minDate = $today->format('Y-m-d');
 
     // Traitements de différents cas utilisateur
     require_once('match.php');
@@ -51,14 +51,14 @@
     $msg_error = "";
     if (isset($_POST["add"])) {
         //Tout les champs sont remplis
-        if (!empty($_POST["date"]) && !empty($_POST["hour"]) && !empty($_POST["opponents"]) && !empty($_POST["location"])) {
+        if (!empty($_POST["date"]) && !empty($_POST["hour"]) && !empty($_POST["opponents"]) && !empty($_POST["location"] && !empty($_POST['radio_domi_ext']))) {
             //On vérifie que le match n'existe pas déjà
             if ($match->matchExist($_POST["date"], $_POST["hour"])) {
                 $msg_error = "Le match existe déjà";
             } else {
                 //Le match n'existe pas déjà
                 //On ajoute le match
-                $match->addMatch($_POST["date"], $_POST["hour"], $_POST["opponents"], $_POST["location"]);
+                $match->addMatch($_POST["date"], $_POST["hour"], $_POST["opponents"], $_POST["location"], $_POST['radio_domi_ext']);
                 $msg_error = "Le match a bien été ajouté";
                 $idMatch = $match->getIdMatch($_POST["date"], $_POST["hour"]);
                 //On crypte l'id du match pour le passer en paramètre dans l'url
@@ -102,13 +102,13 @@
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-date">
                                 Date
                             </label>
-                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-date" name="date" type="date" min="<?php echo $minDate; ?>" value="<?php echo $date ?>">
+                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-date" name="date" type="date" min="<?php  if ($minDate != "") echo $minDate; ?>" value="<?php echo $date ?>">
                         </div>
                         <div class="w-full md:w-1/2 px-3">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-hour">
                                 Heure
                             </label>
-                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-hour" name="hour" type="time"  value="<?php echo $hour ?>">
+                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-hour" name="hour" type="time" value="<?php echo $hour ?>">
                         </div>
                     </div>
                     <div class="flex flex-wrap -mx-3 mb-6">
@@ -116,7 +116,7 @@
                             <label class="block uppercase  tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-opponents">
                                 Équipe adverse
                             </label>
-                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-opponents" name="opponents" type="text" placeholder="BlackList"  value="<?php echo $opponents ?>">
+                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-opponents" name="opponents" type="text" placeholder="BlackList" value="<?php echo $opponents ?>">
                         </div>
 
                     </div>
@@ -125,7 +125,17 @@
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-location">
                                 Lieu
                             </label>
-                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-location" name="location" type="text" placeholder="Toulouse Arena"  value="<?php echo $location ?>">
+                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-location" name="location" type="text" placeholder="Toulouse Arena" value="<?php echo $location ?>">
+                        </div>
+                    </div>
+                    <div class="flex justify-center gap-4 pb-6">
+                        <div>
+                            <input type="radio" name="radio_domi_ext" value="Domicile">
+                            <label class="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="domicile">Domicile</label>
+                        </div>
+                        <div>
+                            <input type="radio" name="radio_domi_ext" value="Exterieur">
+                            <label class="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="exterieur">Extérieur</label>
                         </div>
                     </div>
 

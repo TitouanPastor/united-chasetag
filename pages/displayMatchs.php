@@ -31,7 +31,7 @@
     // Suppression d'un match dans le cas où l'utilisateur clique sur le bouton supprimer d'un match
     if (!empty($_GET["id_del"])) {
         $id_del = base64_decode($_GET['id_del']);
-        $id_del = openssl_decrypt($idMatch, "aes-256-ecb", "toto");
+        $id_del = openssl_decrypt($id_del, "aes-256-ecb", "toto");
         $match->dropMatch($id_del);
     }
 

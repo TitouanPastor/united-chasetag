@@ -14,15 +14,16 @@ class Matchs
     }
 
     // Fonction permettant d'ajouter un match avec les différents paramètres
-    public function addMatch($date, $hour, $opponents, $location)
+    public function addMatch($date, $hour, $opponents, $location, $domi_ext)
     {
         $sql = $this->sql->getConnection();
-        $req = $sql->prepare('INSERT INTO Game VALUES (null, :date, :hour, :opponents, :location, null, null)');
+        $req = $sql->prepare('INSERT INTO Game VALUES (null, :date, :hour, :opponents, :location, null, null, :domi_ext)');
         $req->execute(array(
             'date' => $date,
             'hour' => $hour,
             'opponents' => $opponents,
-            'location' => $location
+            'location' => $location,
+            'domi_ext' => $domi_ext
         ));
     }
 
@@ -115,15 +116,22 @@ class Matchs
     }
 
     // Fonction permettant de retourner dans une chaine de caractères HTML les infos d'un match complètes (disponible sur la page de liste des matchs)
-    public function displayAMatch($id, $date, $hour, $opponents, $location, $score_equipe, $score_adv)
+    public function displayAMatch($id, $date, $hour, $opponents, $location, $score_equipe, $score_adv, $domi_ext)
     {
+        // On vérifie si le match est domicile ou extérieur et on change le sens de l'affichage
+        if ($domi_ext == 'Domicile') {
+            $div_domi_ext = '<span class="text-xl font-medium px-4">United / ' . $opponents . '</span>';
+        } else {
+            $div_domi_ext = '<span class="text-xl font-medium px-4">' . $opponents . ' / United</span>';
+        }
+
         $display = '
         <div class="w-[300px] border border-black h-auto rounded">
                 <div class="flex flex-col justify-between py-4 h-full">
                     <div class="flex flex-col border-b border-black pb-4">
                         <span class="text-sm px-4">' . date('d/m/Y', strtotime($date)) . ' à ' . date('H:i', strtotime($hour)) . '</span>
                         <span class="text-2xl font-medium px-4">' . $location . '</span>
-                        <span class="text-xl font-medium px-4">United / ' . $opponents . '</span>
+                        '.$div_domi_ext.'
                     </div>
                     <div class="border-b border-black h-full">
                         <ul class="p-4">';
@@ -175,8 +183,9 @@ class Matchs
         $matchs = $req->fetchAll();
         $display = "";
         foreach ($matchs as $match) {
-            $display .= $this->displayAMatch($match['id_game'], $match['date_match'], $match['heure_match'], $match['nom_eq_adv'], $match['lieu'], $match['score_equipe'], $match['score_adv']);
+            $display .= $this->displayAMatch($match['id_game'], $match['date_match'], $match['heure_match'], $match['nom_eq_adv'], $match['lieu'], $match['score_equipe'], $match['score_adv'], $match['domi_ext']);
         }
+        // Si il n'y a aucun match à afficher, on affiche un message
         if ($display == "") {
             $display = '<span class="text-xl font-medium">Aucun match à afficher</span>';
         }

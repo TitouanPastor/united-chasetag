@@ -175,7 +175,7 @@ class Player
     public function displayPlayersSelection()
     {
         $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT * FROM Joueur');
+        $req = $sql->prepare('SELECT * FROM Joueur where statut = "Actif" order by nom, prenom');
         $req->execute();
         $players = $req->fetchAll();
         $req->closeCursor();
@@ -190,7 +190,7 @@ class Player
     public function playerIsPlayingAMatch($id_match, $id_player)
     {
         $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT role FROM Participer WHERE id_joueur = :id_player AND id_game = :id_match');
+        $req = $sql->prepare('SELECT role FROM Participer WHERE id_joueur = :id_player AND id_game = :id_match order by role');
         $req->execute(array(
             'id_player' => $id_player,
             'id_match' => $id_match
@@ -264,7 +264,7 @@ class Player
     public function displayPlayersForExistingMatch($id_match)
     {
         $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT * FROM Joueur');
+        $req = $sql->prepare('SELECT * FROM Joueur order by nom, prenom');
         $req->execute();
         $players = $req->fetchAll();
         $display = "";
@@ -277,7 +277,7 @@ class Player
     public function displayPlayersFromMatch($idMatch)
     {
         $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT j.nom, j.prenom, j.photo, j.date_de_naissance, p.role FROM Joueur as j, Participer as p WHERE j.id_joueur = p.id_joueur AND p.id_game = :idMatch');
+        $req = $sql->prepare('SELECT j.nom, j.prenom, j.photo, j.date_de_naissance, p.role FROM Joueur as j, Participer as p WHERE j.id_joueur = p.id_joueur AND p.id_game = :idMatch order by p.role DESC');
         $req->execute(array('idMatch' => $idMatch));
         $players = $req->fetchAll();
         $display = "";
