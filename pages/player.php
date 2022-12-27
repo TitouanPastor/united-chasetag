@@ -175,7 +175,7 @@ class Player
     public function displayPlayersSelection()
     {
         $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT * FROM Joueur');
+        $req = $sql->prepare('SELECT * FROM Joueur where statut = "Actif" order by nom, prenom');
         $req->execute();
         $players = $req->fetchAll();
         $req->closeCursor();
@@ -190,7 +190,7 @@ class Player
     public function playerIsPlayingAMatch($id_match, $id_player)
     {
         $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT role FROM Participer WHERE id_joueur = :id_player AND id_game = :id_match');
+        $req = $sql->prepare('SELECT role FROM Participer WHERE id_joueur = :id_player AND id_game = :id_match order by role');
         $req->execute(array(
             'id_player' => $id_player,
             'id_match' => $id_match
@@ -232,7 +232,7 @@ class Player
         $picture = $this->IMG_DIR . $picture;
         return '<li class="pb-3 sm:pb-4" >
             <div class="flex items-center space-x-4 my-4">
-                '.$div_selectionne.'
+                ' . $div_selectionne . '
                 <div class="flex-shrink-0">
                     <img class="w-8 h-8 rounded-full" src="' . $picture . '" alt="Neil image">
                 </div>
@@ -249,11 +249,11 @@ class Player
                 </div>
                 <div class="flex flex-col justify-between text-base font-semibold text-gray-900 ">
                     <div class="flex gap-2 text-base font-semibold text-gray-900 ">
-                        '.$div_titulaire.'
+                        ' . $div_titulaire . '
                         <label for="titulaire">Titulaire</label>
                     </div>
                     <div class="flex gap-2 text-base font-semibold text-gray-900 ">
-                        '.$div_remplacant.'
+                        ' . $div_remplacant . '
                         <label for="remplacant">Remplacant</label>
                     </div>
                 </div>
@@ -264,7 +264,7 @@ class Player
     public function displayPlayersForExistingMatch($id_match)
     {
         $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT * FROM Joueur');
+        $req = $sql->prepare('SELECT * FROM Joueur order by nom, prenom');
         $req->execute();
         $players = $req->fetchAll();
         $display = "";
@@ -277,7 +277,7 @@ class Player
     public function displayPlayersFromMatch($idMatch)
     {
         $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT j.nom, j.prenom, j.photo, j.date_de_naissance, p.role FROM Joueur as j, Participer as p WHERE j.id_joueur = p.id_joueur AND p.id_game = :idMatch');
+        $req = $sql->prepare('SELECT j.nom, j.prenom, j.photo, j.date_de_naissance, p.role FROM Joueur as j, Participer as p WHERE j.id_joueur = p.id_joueur AND p.id_game = :idMatch order by p.role DESC');
         $req->execute(array('idMatch' => $idMatch));
         $players = $req->fetchAll();
         $display = "";
@@ -285,6 +285,135 @@ class Player
             $display .= $this->displayPlayerSummary($player['nom'], $player['prenom'], $player['photo'], $player['date_de_naissance'], $player['role']);
         }
         return $display;
+    }
+
+    public function displayPlayersForEvaluation($idMatch)
+    {
+        $sql = $this->sql->getConnection();
+        $req = $sql->prepare('SELECT j.nom, j.prenom, j.photo, j.date_de_naissance, p.role, p.note FROM Joueur as j, Participer as p WHERE j.id_joueur = p.id_joueur AND p.id_game = :idMatch order by p.role DESC');
+        $req->execute(array('idMatch' => $idMatch));
+        $players = $req->fetchAll();
+        $display = "";
+        foreach ($players as $player) {
+            $display .= $this->displayPlayerSummaryForEvaluation($player['nom'], $player['prenom'], $player['photo'], $player['date_de_naissance'], $player['role'], $player['note']);
+        }
+        return $display;
+    }
+
+    public function displayPlayerSummaryForEvaluation($name, $surname, $picture, $birthday, $state, $note = 1)
+    {
+        $picture = $this->IMG_DIR . $picture;
+        $year = date('Y') - date('Y', strtotime($birthday));
+        if ($state == null) {
+            $state = "Aucun statut";
+        }
+
+        // Persistence des données, permet d'afficher directement les notes déjà entrées par l'utilisateur
+        $isChecked1 = "checked";
+        $isChecked2 = "";
+        $isChecked3 = "";
+        $isChecked4 = "";
+        $isChecked5 = "";
+        $label1TextState = "text-yellow-500";
+        $label2TextState = "text-gray-300";
+        $label3TextState = "text-gray-300";
+        $label4TextState = "text-gray-300";
+        $label5TextState = "text-gray-300";
+        switch ($note) {
+            case 2:
+                $isChecked2 = "checked";
+                $label2TextState = "text-yellow-500";
+                break;
+            case 3:
+                $isChecked3 = "checked";
+                $label2TextState = "text-yellow-500";
+                $label3TextState = "text-yellow-500";
+                break;
+            case 4:
+                $isChecked4 = "checked";
+                $label2TextState = "text-yellow-500";
+                $label3TextState = "text-yellow-500";
+                $label4TextState = "text-yellow-500";
+                break;
+            case 5:
+                $isChecked5 = "checked";
+                $label2TextState = "text-yellow-500";
+                $label3TextState = "text-yellow-500";
+                $label4TextState = "text-yellow-500";
+                $label5TextState = "text-yellow-500";
+                break;
+            default:
+                break;
+        }
+
+        return '<li class="pb-3 sm:pb-4" >
+            <div class="flex items-center space-x-4 py-[3px]">
+                <div class="flex-shrink-0">
+                    <img class="w-8 h-8 rounded-full" src="' . $picture . '" alt="image du joueur">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-m font-medium text-gray-900 truncate">
+                        ' . $surname . ' ' . $name . ' - ' . $year . ' ans
+                    </p>
+                    <p class="text-m text-gray-500 truncate dark:text-gray-400">
+                        ' . $state . '
+                    </p>
+                </div>
+                <div class="flex items-center">
+                    <input class="hidden" type="radio" name="rating-' . $name . '" id="rating-1-' . $name . '" value="1" '.$isChecked1.'>
+                    <label for="rating-1-' . $name . '" class="eval-label-' . $name . ' w-6 h-6 '.$label1TextState.' hover:text-yellow-600 fill-current cursor-pointer" onclick="labelClicked(this)" id="1">
+                        <svg class="w-full" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+                        </svg>
+                    </label>
+                    <input class="hidden" type="radio" name="rating-' . $name . '" id="rating-2-' . $name . '" value="2"  '.$isChecked2.'>
+                    <label for="rating-2-' . $name . '" class="eval-label-' . $name . ' w-6 h-6 '.$label2TextState.' hover:text-yellow-600 fill-current cursor-pointer" onclick="labelClicked(this)" id="2">
+                        <svg class="w-full" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+                        </svg>
+                    </label>
+                    <input class="hidden" type="radio" name="rating-' . $name . '" id="rating-3-' . $name . '" value="3"  '.$isChecked3.'>
+                    <label for="rating-3-' . $name . '" class="eval-label-' . $name . ' w-6 h-6 '.$label3TextState.' hover:text-yellow-600 fill-current cursor-pointer" onclick="labelClicked(this)" id="3">
+                        <svg class="w-full" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+                        </svg>
+                    </label>
+                    <input class="hidden" type="radio" name="rating-' . $name . '" id="rating-4-' . $name . '" value="4"  '.$isChecked4.'>
+                    <label for="rating-4-' . $name . '" class="eval-label-' . $name . ' w-6 h-6 '.$label4TextState.' hover:text-yellow-600 fill-current cursor-pointer" onclick="labelClicked(this)" id="4">
+                        <svg class="w-full" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+                        </svg>
+                    </label>
+                    <input class="hidden" type="radio" name="rating-' . $name . '" id="rating-5-' . $name . '" value="5"  '.$isChecked5.'>
+                    <label for="rating-5-' . $name . '" class="eval-label-' . $name . ' w-6 h-6 '.$label5TextState.' hover:text-yellow-600 fill-current cursor-pointer" onclick="labelClicked(this)" id="5">
+                        <svg class="w-full" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+                        </svg>
+                    </label>
+                </div>
+            </div>
+        </li>';
+    }
+
+    public function getPlayerNameArrayFromMatch($idMatch)
+    {
+        $sql = $this->sql->getConnection();
+        $req = $sql->prepare('SELECT j.nom, j.numero_de_licence FROM Joueur j, Participer p WHERE j.id_joueur = p.id_joueur AND p.id_game = :idMatch ORDER BY p.role desc');
+        $req->execute(array(
+            'idMatch' => $idMatch
+        ));
+        return $req;
+    }
+
+    public function addPlayerRating($idMatch, $idPlayer, $rating)
+    {
+        $sql = $this->sql->getConnection();
+        $req = $sql->prepare('UPDATE Participer SET note = :rating WHERE id_game = :idMatch AND id_joueur = :idPlayer');
+        $req->execute(array(
+            'idMatch' => $idMatch,
+            'idPlayer' => $idPlayer,
+            'rating' => $rating
+        ));
     }
 
     public function getPlayer($id)
