@@ -44,7 +44,7 @@ if ($_SESSION['email'] == '') {
         <h2 class="m-5 text-3xl font-bold text-center">Statistiques</h2>
     </section>
     <section class="flex flex-col items-center justify-center mx-10">
-        <h3 class="m-5 text-2xl font-semibold text-center">Matchs</h3>
+        <h3 class="m-5 text-2xl font-semibold text-center">Les Matchs</h3>
 
         <div class="overflow-hidden">
             <table class="w-full mx-10">
@@ -82,16 +82,58 @@ if ($_SESSION['email'] == '') {
                 </tbody>
             </table>
         </div>
+        <h3 class="m-5 text-2xl font-semibold text-center">Les joueurs</h3>
     </section>
     <section class="grid place-items-center ml-72 mr-12">
-        <h3 class="m-5 text-2xl font-semibold text-center">Matchs</h3>
+        
         <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
-        <?php
-        foreach ($positions as $joueur => $position) {
-            echo '<li class="pb-3 sm:pb-4" >
+            <?php
+            
+            foreach ($positions as $joueur => $position) {
+                $isChecked1 = "checked";
+                $isChecked2 = "";
+                $isChecked3 = "";
+                $isChecked4 = "";
+                $isChecked5 = "";
+                $label1TextState = "text-yellow-500";
+                $label2TextState = "text-gray-300";
+                $label3TextState = "text-gray-300";
+                $label4TextState = "text-gray-300";
+                $label5TextState = "text-gray-300";
+                $note =  $stats->getRanking($position['id']);
+                if ($note == ""){
+                    $note = 1;
+                }
+                switch ($note) {
+                    case 2:
+                        $isChecked2 = "checked";
+                        $label2TextState = "text-yellow-500";
+                        break;
+                    case 3:
+                        $isChecked3 = "checked";
+                        $label2TextState = "text-yellow-500";
+                        $label3TextState = "text-yellow-500";
+                        break;
+                    case 4:
+                        $isChecked4 = "checked";
+                        $label2TextState = "text-yellow-500";
+                        $label3TextState = "text-yellow-500";
+                        $label4TextState = "text-yellow-500";
+                        break;
+                    case 5:
+                        $isChecked5 = "checked";
+                        $label2TextState = "text-yellow-500";
+                        $label3TextState = "text-yellow-500";
+                        $label4TextState = "text-yellow-500";
+                        $label5TextState = "text-yellow-500";
+                        break;
+                    default:
+                        break;
+                }
+                echo '<li class="pb-3 sm:pb-4" >
             <div class="flex items-center space-x-4 my-4">
                 <div class="flex-shrink-0">
-                    <img class="w-16 h-16 rounded-full" src="' . $position['picture']. '" alt="Photo de ' . $joueur.'">
+                    <img class="w-16 h-16 rounded-full" src="' . $position['picture'] . '" alt="Photo de ' . $joueur . '">
                 </div>
                 <div class="flex-1 min-w-0">
                     <p class="text-m font-medium text-gray-900 truncate ">
@@ -99,18 +141,53 @@ if ($_SESSION['email'] == '') {
                     </p>
                     <p class="text-m text-gray-500 truncate dark:text-gray-400">
                         Titulaire : ' . $position['nb_owner'] . ' Remplacant : ' . $position['nb_alternate'] . '
-                    </p>
-                    <p class="text-m text-gray-500 truncate dark:text-gray-400 whitespace-normal   ">
+                        
+                    
+                    
+                    <div class="flex items-center">
+                    <input class="hidden" type="radio" name="rating-' . $joueur . '" id="rating-1-' . $joueur . '" value="1" ' . $isChecked1 . '>
+                    <label for="rating-1-' . $joueur . '" class="eval-label-' . $joueur . ' w-6 h-6  text-yellow-500 fill-current cursor-pointer" onclick="labelClicked(this)" id="1">
+                        <svg class="w-full" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+                        </svg>
+                    </label>
+                    <input class="hidden" type="radio" name="rating-' . $joueur . '" id="rating-2-' . $joueur . '" value="2"  ' . $isChecked2 . '>
+                    <label for="rating-2-' . $joueur . '" class="eval-label-' . $joueur . ' w-6 h-6 ' . $label2TextState . '  fill-current cursor-pointer" onclick="labelClicked(this)" id="2">
+                        <svg class="w-full" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+                        </svg>
+                    </label>
+                    <input class="hidden" type="radio" name="rating-' . $joueur . '" id="rating-3-' . $joueur . '" value="3"  ' . $isChecked3 . '>
+                    <label for="rating-3-' . $joueur . '" class="eval-label-' . $joueur . ' w-6 h-6 ' . $label3TextState . '  fill-current cursor-pointer" onclick="labelClicked(this)" id="3">
+                        <svg class="w-full" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+                        </svg>
+                    </label>
+                    <input class="hidden" type="radio" name="rating-' . $joueur . '" id="rating-4-' . $joueur . '" value="4"  ' . $isChecked4 . '>
+                    <label for="rating-4-' . $joueur . '" class="eval-label-' . $joueur . ' w-6 h-6 ' . $label4TextState . '  fill-current cursor-pointer" onclick="labelClicked(this)" id="4">
+                        <svg class="w-full" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+                        </svg>
+                    </label>
+                    <input class="hidden" type="radio" name="rating-' . $joueur . '" id="rating-5-' . $joueur . '" value="5"  ' . $isChecked5 . '>
+                    <label for="rating-5-' . $joueur . '" class="eval-label-' . $joueur . ' w-6 h-6 ' . $label5TextState . ' fill-current cursor-pointer" onclick="labelClicked(this)" id="5">
+                        <svg class="w-full" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+                        </svg>
+                    </label>
+                    '.$note.'/5</p>
+                </div>
+                    <p class="text-m text-gray-500 truncate dark:text-gray-400 whitespace-normal ">
                      ' . $position['fav_position'] . ' - ' . $position['state'] . '
                     </p>
                 
                 </div>
             </div>
         </li>';
-        }
+            }
 
 
-        ?>
+            ?>
         </ul>
     </section>
 </body>

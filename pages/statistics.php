@@ -31,14 +31,15 @@ class Stats
             FROM Joueur j
             LEFT JOIN (
                 SELECT id_joueur, COUNT(*) as nb_titulaire
-                FROM Participer
-                WHERE role = 'titulaire'
+                FROM Participer, Game g
+                WHERE role = 'titulaire' AND g.id_game = Participer.id_game AND g.statut = '1'
+                
                 GROUP BY id_joueur
             ) t ON t.id_joueur = j.id_joueur
             LEFT JOIN (
                 SELECT id_joueur, COUNT(*) as nb_remplaçant
-                FROM Participer
-                WHERE role = 'remplaçant'
+                FROM Participer, Game g
+                WHERE role = 'remplaçant' AND g.id_game = Participer.id_game AND g.statut = '1'
                 GROUP BY id_joueur
             ) r ON r.id_joueur = j.id_joueur");
         $req->execute();    
@@ -49,11 +50,22 @@ class Stats
                 'picture' =>  '../imgPlayers/'.$datas['photo'],
                 'state' => $datas['statut'],
                 'fav_position' => $datas['poste_prefere'],
-                'license' => $datas['numero_de_licence']
+                'license' => $datas['numero_de_licence'],
+                'id' => $datas['id_joueur']
             );
 
         }
 
         return $stats_positions;
+    }
+
+    public function getRanking($id){
+        $req = $this->sql->getConnection()->prepare("SELECT round(avg(note),2) as average FROM Participer where id_joueur = :id group by id_joueur");
+        $req->execute(array(
+            'id' => $id
+        ));
+        while ($datas = $req->fetch()) {
+            return $datas['average'];
+        }
     }
 }
