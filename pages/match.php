@@ -227,4 +227,12 @@ class Matchs
             'score_adv' => $score_adv
         ));
     }
+
+    public function matchToFinished($idMatch) {
+        $sql = $this->sql->getConnection();
+        $req = $sql->prepare('UPDATE Game SET statut = 1 WHERE id_game = :id');
+        $req->execute(array(
+            'id' => $idMatch
+        ));
+    }
 }

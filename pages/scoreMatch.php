@@ -52,6 +52,7 @@
         // On vériifie que les champs ne sont pas vides
         if (($_POST['score_team']) != null || ($_POST['score_adv']) != null) {
             $match->editMatch($idMatch, $date, $hour, $opponents, $location, $_POST['score_team'], $_POST['score_adv']);
+            $match->matchToFinished($idMatch);
             header('Location: displayMatchs.php');
         } else {
             $msg_error = "Veuillez renseigner le score de l'équipe et de l'adversaire";
