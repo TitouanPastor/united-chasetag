@@ -57,7 +57,7 @@ if (isset($_POST["edit"])) {
                         $pState = $_POST['state'];
                     }
                     if (empty($_POST['comment'])) {
-                        $pComment = "NON";
+                        $pComment = null;
                     } else {
                         $pComment = $_POST['comment'];
                     }
@@ -81,7 +81,7 @@ if (isset($_POST["edit"])) {
                         $comment = $data['commentaire'];
                         $state = $data['statut'];
                     }
-                    $msg_error = "Joueur modifier !";
+                    $msg_error = "Joueur modifié !";
                 } else {
                     $msg_error = "Joueur déjà existant";
                 }
