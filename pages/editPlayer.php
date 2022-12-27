@@ -57,7 +57,7 @@ if (isset($_POST["edit"])) {
                         $pState = $_POST['state'];
                     }
                     if (empty($_POST['comment'])) {
-                        $pComment = "NON";
+                        $pComment = null;
                     } else {
                         $pComment = $_POST['comment'];
                     }
