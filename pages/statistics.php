@@ -18,9 +18,9 @@ class Stats
         $req->execute();
         while ($datas = $req->fetch()) {
             $stats_matchs[0] = $datas['match_joue'];
-            $stats_matchs[1] = $datas['match_gagne'] / $stats_matchs[0]*100;
-            $stats_matchs[2] = $datas['match_perdu'] / $stats_matchs[0]*100;
-            $stats_matchs[3] = (1 - ($stats_matchs[1]/100 + $stats_matchs[2]/100))*100;
+            $stats_matchs[1] = round($datas['match_gagne'] / $stats_matchs[0]*100,2);
+            $stats_matchs[2] = round($datas['match_perdu'] / $stats_matchs[0]*100,2);
+            $stats_matchs[3] = round((1 - ($stats_matchs[1]/100 + $stats_matchs[2]/100))*100,2);
         }
 
         return $stats_matchs;
@@ -75,10 +75,10 @@ class Stats
     public function updateStats($isWined) {
         $req = $this->sql->getConnection()->prepare("UPDATE Club SET match_joue = match_joue + 1");
         $req->execute();
-        if ($isWined) {
+        if ($isWined == 1) {
             $req = $this->sql->getConnection()->prepare("UPDATE Club SET match_gagne = match_gagne + 1");
             $req->execute();
-        } else {
+        } elseif ($isWined == 0) {
             $req = $this->sql->getConnection()->prepare("UPDATE Club SET match_perdu = match_perdu + 1");
             $req->execute();
         }

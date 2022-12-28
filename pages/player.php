@@ -290,7 +290,7 @@ class Player
     public function displayPlayersForEvaluation($idMatch)
     {
         $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT j.nom, j.prenom, j.photo, j.date_de_naissance, p.role, p.note FROM Joueur as j, Participer as p WHERE j.id_joueur = p.id_joueur AND p.id_game = :idMatch order by p.role DESC');
+        $req = $sql->prepare('SELECT j.nom, j.prenom, j.photo, j.date_de_naissance, p.role, p.note FROM Joueur as j, Participer as p WHERE j.id_joueur = p.id_joueur AND p.id_game = :idMatch order by p.role');
         $req->execute(array('idMatch' => $idMatch));
         $players = $req->fetchAll();
         $display = "";

@@ -59,9 +59,11 @@
                 $match->matchToFinished($idMatch);
                 // Si United a gagné, on ajoute un match gagné
                 if ($_POST['score_team'] > $_POST['score_adv']) {
-                    $statistics->updateStats(true);
-                } else {
-                    $statistics->updateStats(false);
+                    $statistics->updateStats(1);
+                } elseif($_POST['score_team'] < $_POST['score_adv']){
+                    $statistics->updateStats(0);
+                }else{
+                    $statistics->updateStats(-1);
                 }
             }
             $match->matchToFinished($idMatch);
