@@ -104,7 +104,7 @@ if ($_SESSION['email'] == '') {
                 if ($note == ""){
                     $note = 1;
                 }
-                switch ($note) {
+                switch (round($note, -1)) {
                     case 2:
                         $isChecked2 = "checked";
                         $label2TextState = "text-yellow-500";

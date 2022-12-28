@@ -71,6 +71,9 @@
             $msg_error = "Tous les champs doivent être remplis";
         }
     }
+    if(isset($_POST["return"])){
+        header("location: displayMatchs.php"); 
+    }
 
     ?>
 
@@ -94,7 +97,7 @@
 
         <section class="h-screen flex items-center justify-center mx-10">
             <div class="my-6 px-9  border-2 border-purple-800 rounded ">
-                <h2 class="m-5 text-4xl font-bold text-center">Ajouter un tournoi</h2>
+                <h2 class="m-5 text-4xl font-bold text-center">Ajouter un match</h2>
                 <form class="block w-full max-w-lg mb-10" action="addMatch.php" method="post">
 
                     <div class="flex flex-wrap -mx-3 mb-6">

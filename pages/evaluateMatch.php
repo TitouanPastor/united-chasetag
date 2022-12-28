@@ -48,6 +48,10 @@
             header('Location: displayMatchs.php');
         }
     }
+    if(isset($_POST["return"])){
+        header("location: displayMatchs.php"); 
+    }
+
 
     ?>
 

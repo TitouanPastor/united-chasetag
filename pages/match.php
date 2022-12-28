@@ -17,7 +17,7 @@ class Matchs
     public function addMatch($date, $hour, $opponents, $location, $domi_ext)
     {
         $sql = $this->sql->getConnection();
-        $req = $sql->prepare('INSERT INTO Game VALUES (null, :date, :hour, :opponents, :location, null, null, :domi_ext)');
+        $req = $sql->prepare('INSERT INTO Game VALUES (null, :date, :hour, :opponents, :location, null, null, :domi_ext, null)');
         $req->execute(array(
             'date' => $date,
             'hour' => $hour,

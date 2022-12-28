@@ -96,6 +96,10 @@ if (isset($_POST["edit"])) {
     }
 }
 
+if(isset($_POST["return"])){
+    header("location: displayPlayers.php"); 
+}
+
 ?>
 
 <body>

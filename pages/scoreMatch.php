@@ -71,6 +71,10 @@
         }
     }
 
+    if(isset($_POST["return"])){
+        header("location: displayMatchs.php"); 
+    }
+
     ?>
 
     <!-- Navbar latérale -->

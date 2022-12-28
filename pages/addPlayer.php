@@ -23,6 +23,28 @@
 require_once('player.php');
 $player = new Player();
 $msg_error = "";
+
+    // Déclaration des variables de persistence en cas d'erreur ou de rafraichissement de la page
+    $name = "";
+    $lastname = "";
+    $picture = "";
+    $license= "";
+    $birthday="";
+    $weight="60";
+    $size="170";
+    $position="Chat";
+
+    if (isset($_POST["add"])) {
+        $name = $_POST["name"];
+        $lastname = $_POST["lastname"];
+        $picture = $_POST["picture"];
+        $license = $_POST["license"];
+        $birthday = $_POST["birthday"];
+        $weight = $_POST["weight"];
+        $size = $_POST["size"];
+        $position = $_POST["position"];
+    }
+
 if (isset($_POST["add"])) {
     //Tout les champs sont remplis
     if (!empty($_POST['name']) && !empty($_POST['lastname']) && !empty($_POST['picture']) && !empty($_POST['license']) && !empty($_POST['birthday']) && !empty($_POST['weight']) && !empty($_POST['size']) && !empty($_POST['position'])) {
@@ -46,6 +68,9 @@ if (isset($_POST["add"])) {
     } else {
         $msg_error = "Veuillez remplir tous les champs";
     }
+}
+if(isset($_POST["return"])){
+    header("location: displayPlayers.php"); 
 }
 
 ?>
@@ -79,13 +104,13 @@ if (isset($_POST["add"])) {
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                                 Nom
                             </label>
-                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-black-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border-purple-800" id="grid-first-name" name="name" type="text" placeholder="Votre nom">
+                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-black-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border-purple-800" id="grid-first-name" name="name" type="text" placeholder="Votre nom" value="<?php echo $lastname; ?>">
                         </div>
                         <div class="w-full md:w-1/2 px-3">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
                                 Prénom
                             </label>
-                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-last-name" name="lastname" type="text" placeholder="Votre prénom">
+                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-last-name" name="lastname" type="text" placeholder="Votre prénom" value="<?php echo $name; ?>">
                         </div>
                     </div>
                     <div class="flex flex-wrap -mx-3 mb-6">
@@ -93,7 +118,7 @@ if (isset($_POST["add"])) {
                             <label class="block uppercase  tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-picture">
                                 Photo
                             </label>
-                            <input class="w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-picture" name="picture" type="file" placeholder="Lien vers votre photo" accept="image/png, image/jpeg">
+                            <input class="w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-picture" name="picture" type="file" placeholder="Lien vers votre photo" accept="image/png, image/jpeg value="<?php echo $picture; ?>">
                         </div>
 
                     </div>
@@ -102,13 +127,13 @@ if (isset($_POST["add"])) {
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-license-number">
                                 Numéro de licence
                             </label>
-                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-license-number" name="license" type="text" placeholder="Format : (00000AA)">
+                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-license-number" name="license" type="text" placeholder="Format : (00000AA)" value="<?php echo $license; ?>">
                         </div>
                         <div class="w-full md:w-1/2 px-3">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-birthday">
                                 Date de naissance
                             </label>
-                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-birthday" name="birthday" type="date">
+                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 " id="grid-birthday" name="birthday" type="date" value="<?php echo $birthday; ?>">
                         </div>
                     </div>
                     <div class="flex flex-wrap -mx-3 mb-6">
@@ -116,13 +141,13 @@ if (isset($_POST["add"])) {
                             <label class="block tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-weight">
                                 POIDS (en KG)
                             </label>
-                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-weight" name="weight" type="number" min="40" max="150" value="60">
+                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-weight" name="weight" type="number" min="40" max="150" value="<?php echo $weight; ?>">
                         </div>
                         <div class="w-full md:w-1/2 px-3">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-size">
                                 Taille (en cm)
                             </label>
-                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-size" name="size" type="number" min="130" max="22s0" value="170">
+                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-purple-800 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-size" name="size" type="number" min="130" max="22s0" value="<?php echo $size; ?>">
                         </div>
                     </div>
                     <div class="flex flex-wrap -mx-3 mb-6">
@@ -133,7 +158,7 @@ if (isset($_POST["add"])) {
                                 Poste préféré
                             </label>
                             <div class="relative">
-                                <select class="block w-full bg-gray-200 border  text-gray-700 border-purple-800 rounded  py-3 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-favorite_position" name="position">
+                                <select class="block w-full bg-gray-200 border  text-gray-700 border-purple-800 rounded  py-3 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-favorite_position" name="position" value="<?php echo $position; ?>">
                                     <option value="Chat">Chat</option>
                                     <option value="Souris">Souris</option>
 
