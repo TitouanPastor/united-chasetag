@@ -57,9 +57,10 @@
     <?php
     require_once('player.php');
     if (!empty($_GET["deletePlayer"])){
-        echo "ok";
         $player = new Player();
-        $player->deletePlayer($_GET['deletePlayer']);
+        $id_del = base64_decode($_GET['deletePlayer']);
+        $id_del = openssl_decrypt($id_del, "aes-256-ecb", "toto");
+        $player->deletePlayer($id_del);
     }
 ?>
 

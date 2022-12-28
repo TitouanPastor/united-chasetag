@@ -54,6 +54,11 @@ class Player
             $comment = "Aucun commentaire";
         }
 
+        $idPlayerEncode = openssl_encrypt($id, "aes-256-ecb", "toto");
+        // On l'encode en base64 pour éviter les problèmes d'encodage
+        $idPlayerEncode = base64_encode($idPlayerEncode);
+
+
         $picture = $this->IMG_DIR . $picture;
         return '<li class="pb-3 sm:pb-4" >
             <div class="flex items-center space-x-4 my-4">
@@ -72,8 +77,8 @@ class Player
                     </p>
                 </div>
                 <div class="inline-flex items-center text-base font-semibold text-gray-900 ">
-                    <a href="editPlayer.php?id=' . $id . '" class="p-2"> MODIFIER </a> 
-                    <a href="displayPlayers.php?deletePlayer=' . $id . '" class="p-2" name="delete"> SUPPRIMER </a>
+                    <a href="editPlayer.php?id=' . $idPlayerEncode . '" class="p-2"> MODIFIER </a> 
+                    <a href="displayPlayers.php?deletePlayer=' . $idPlayerEncode . '" class="p-2" name="delete"> SUPPRIMER </a>
                 </div>
             </div>
         </li>';
@@ -140,6 +145,7 @@ class Player
             $comment = "Aucun commentaire";
         }
 
+    
         $picture = $this->IMG_DIR . $picture;
         return '<li class="pb-3 sm:pb-4" >
             <div class="flex items-center space-x-4 my-4">

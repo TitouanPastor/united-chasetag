@@ -23,9 +23,11 @@ if ($_SESSION['email'] == '') {
 require_once('player.php');
 $player = new Player();
 
+$idPlayer = base64_decode($_GET['id']);
+$idPlayer= openssl_decrypt($idPlayer, "aes-256-ecb", "toto");
 
-$p = $player->getPlayer($_GET['id']);
-$id = $_GET['id'];
+$p = $player->getPlayer($idPlayer);
+
 while ($data = $p->fetch()) {
     $name = $data['prenom'];
     $lastname = $data['nom'];
@@ -50,7 +52,7 @@ if (isset($_POST["edit"])) {
             //Date supérieur à 18 ans
             if (date_diff(date_create($_POST['birthday']), date_create('today'))->y >= 18) {
                 //Joueur deja existant 
-                if (!$player->playerExistUpdate($_POST['license'], $_POST['name'], $_POST['lastname'], $id)) {
+                if (!$player->playerExistUpdate($_POST['license'], $_POST['name'], $_POST['lastname'], $idPlayer)) {
                     if (empty($_POST['state'])) {
                         $pState = null;
                     } else {
@@ -124,7 +126,7 @@ if(isset($_POST["return"])){
         <section class="grid place-items-center mx-10">
             <div class="my-6 px-9  border-2 border-purple-800 rounded ">
                 <h2 class="m-5 text-4xl font-bold text-center">Modifier <?php echo $name . ' ' . $lastname; ?></h2>
-                <form class="block w-full max-w-lg mb-10" action="editPlayer.php?id=<?php echo $id ?>" method="post">
+                <form class="block w-full max-w-lg mb-10" action="editPlayer.php?id=<?php echo $_GET['id'] ?>" method="post">
 
                     <div class="flex flex-wrap -mx-3 mb-6">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
