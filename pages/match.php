@@ -121,9 +121,11 @@ class Matchs
  
         $bg_match = '';
         $is_match_passed = false;
+        $span_is_finished = '';
         // On vérifie si le match est passé ou non et on change la couleur de l'affichage
         if (strtotime($date) < strtotime(date('Y-m-d'))) {
             $bg_match = 'bg-gray-200';
+            $span_is_finished = '<span class="text-l font-medium px-4 text-red-600">Match terminé</span>';
             $is_match_passed = true;
         }
 
@@ -138,6 +140,7 @@ class Matchs
         <div class="w-[300px] border '.$bg_match.' border-black h-auto rounded hover:scale-[102%] hover:shadow-xl transition-all">
                 <div class="flex flex-col justify-between py-4 h-full">
                     <div class="flex flex-col border-b border-black pb-4">
+                    '.$span_is_finished.'
                         <span class="text-sm px-4">' . date('d/m/Y', strtotime($date)) . ' à ' . date('H:i', strtotime($hour)) . '</span>
                         <span class="text-2xl font-medium px-4">' . $location . '</span>
                         '.$div_domi_ext.'
