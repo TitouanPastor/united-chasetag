@@ -18,9 +18,9 @@ class Stats
         $req->execute();
         while ($datas = $req->fetch()) {
             $stats_matchs[0] = $datas['match_joue'];
-            $stats_matchs[1] = $datas['match_gagne'] / $stats_matchs[0];
-            $stats_matchs[2] = $datas['match_perdu'] / $stats_matchs[0];
-            $stats_matchs[3] = 1 - ($stats_matchs[1] + $stats_matchs[2]);
+            $stats_matchs[1] = $datas['match_gagne'] / $stats_matchs[0]*100;
+            $stats_matchs[2] = $datas['match_perdu'] / $stats_matchs[0]*100;
+            $stats_matchs[3] = (1 - ($stats_matchs[1]/100 + $stats_matchs[2]/100))*100;
         }
 
         return $stats_matchs;
