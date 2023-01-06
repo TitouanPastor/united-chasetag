@@ -7,10 +7,12 @@ class Player
 
     public function __construct()
     {
+        //Connexion à la base de données
         require_once('../BDD.php');
         $this->sql = new connectBDD();
     }
 
+    //Requete pour ajouter un joueur dans la base de données 
     public function addPlayer($name, $lastname, $picture_path, $lience, $birthday, $weight, $size, $position)
     {
         $sql = $this->sql->getConnection();
@@ -27,6 +29,7 @@ class Player
         ));
     }
 
+    //Retourne true si le joueur existe déjà dans la base de données false sinon
     public function playerExist($licence, $name, $lastname)
     {
         $sql = $this->sql->getConnection();
@@ -43,10 +46,13 @@ class Player
         return false;
     }
 
+    //Retourne un <li></li> avec les informations du joueur pour afficher dans un tableau <ul>
     public function displayAPlayer($name, $lastname, $licence, $picture, $birthday, $weight, $size, $position, $state, $comment, $id)
     {
-        //Transformer birthday en age 
+        //Date de naissance > age
         $year = date('Y') - date('Y', strtotime($birthday));
+
+        // Initilisation des variables null
         if ($state == null) {
             $state = "Aucun statut";
         }
@@ -54,12 +60,14 @@ class Player
             $comment = "Aucun commentaire";
         }
 
+        //Cryptage de l'id du joueur pour l'envoyer dans l'url si ont veut modifier ou supprimer le joueur
         $idPlayerEncode = openssl_encrypt($id, "aes-256-ecb", "toto");
-        // On l'encode en base64 pour éviter les problèmes d'encodage
         $idPlayerEncode = base64_encode($idPlayerEncode);
 
-
+        //Ajout du chemin de l'image
         $picture = $this->IMG_DIR . $picture;
+
+        //Code html pour afficher le joueur
         return '<li class="pb-3 sm:pb-4" >
             <div class="flex items-center space-x-4 my-4">
                 <div class="flex-shrink-0">
@@ -84,6 +92,7 @@ class Player
         </li>';
     }
 
+    //Retourne l'id du joueur
     public function getIdPlayer($licence)
     {
         $sql = $this->sql->getConnection();
@@ -95,6 +104,7 @@ class Player
         return $id['id_joueur'];
     }
 
+    //Retourne les joueurs sous forme de tableau <ul>
     public function displayPlayers()
     {
         $sql = $this->sql->getConnection();
@@ -110,6 +120,7 @@ class Player
         return $display;
     }
 
+    //Affichage des joueurs dans la page des matchs
     public function displayPlayerSummary($name, $surname, $picture, $birthday, $state)
     {
         $picture = $this->IMG_DIR . $picture;
@@ -134,6 +145,7 @@ class Player
         </li>';
     }
 
+    //Affichage des joueurs pour les selectionner
     public function displayAPlayerSelection($name, $lastname, $licence, $picture, $birthday, $weight, $size, $position, $state, $comment)
     {
         //Transformer birthday en age 
@@ -410,7 +422,7 @@ class Player
         ));
         return $req;
     }
-
+    //Ajout d'une note à un joueur pour un match
     public function addPlayerRating($idMatch, $idPlayer, $rating)
     {
         $sql = $this->sql->getConnection();
@@ -422,6 +434,7 @@ class Player
         ));
     }
 
+    //Retourne un joueur en fonction de son ID
     public function getPlayer($id)
     {
         $sql = $this->sql->getConnection();
@@ -432,6 +445,7 @@ class Player
         return $req;
     }
 
+    //Modification d'un joueur 
     public function updatePlayer($id, $name, $lastname, $picture_path, $lience, $birthday, $weight, $size, $position, $state, $comment)
     {
         $sql = $this->sql->getConnection();
@@ -451,6 +465,7 @@ class Player
         ));
     }
 
+    //Vérifie si un joueur existe déjà (pour modification joueur)
     public function playerExistUpdate($licence, $name, $lastname, $id)
     {
         $sql = $this->sql->getConnection();
@@ -460,7 +475,7 @@ class Player
             'name' => $name,
             'lastname' => $lastname
         ));
-        //si le resultat de la requete à plus d'une ligne, alors le joueur existe déjà
+        //Si le joueur existe déjà et que ce n'est pas le joueur en cours de modification
         if ($req->rowCount() > 0) {
             while ($data = $req->fetch()) {
                 if ($data['id_joueur'] != $id) {
@@ -471,6 +486,7 @@ class Player
         return false;
     }
 
+    //Suppression d'un joueur
     public function deletePlayer($id)
     {
         $sql = $this->sql->getConnection();

@@ -90,7 +90,7 @@ if ($_SESSION['email'] == '') {
         
         <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
             <?php
-            
+            //Affichage des stats de chaque joueurs
             foreach ($positions as $joueur => $position) {
                 $isChecked1 = "checked";
                 $isChecked2 = "";

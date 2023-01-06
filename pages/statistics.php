@@ -7,10 +7,12 @@ class Stats
 
     public function __construct()
     {
+        //Connexion à la base de données
         require_once('../BDD.php');
         $this->sql = new connectBDD();
     }
 
+    //Recupere les stats des matchs du club (Total, gagné, perdu, nul) 
     public function getMatchs()
     {
         $stats_matchs = array();
@@ -62,6 +64,7 @@ class Stats
         return $stats_positions;
     }
 
+    // Recupere la moyenne des notes d'un joueur 
     public function getRanking($id){
         $req = $this->sql->getConnection()->prepare("SELECT round(avg(note),2) as average FROM Participer where id_joueur = :id group by id_joueur");
         $req->execute(array(
@@ -72,6 +75,7 @@ class Stats
         }
     }
 
+    // Faiss la modification des stats du club (des matchs suivant le résultat du match)
     public function updateStats($isWined) {
         $req = $this->sql->getConnection()->prepare("UPDATE Club SET match_joue = match_joue + 1");
         $req->execute();
