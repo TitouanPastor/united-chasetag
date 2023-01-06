@@ -21,11 +21,14 @@
 
     // On initialise les variables
     $info_login = '';
+    require_once('auth.php');
+    $auth = new Auth();
 
     // Traitement du formulaire
     if (isset($_POST['submit'])) {
         if (!empty($_POST['email']) && !empty($_POST['password'])) {
-            if ($_POST['email'] == 'chasetag@gmail.com' && $_POST['password'] == 'chasetag') {
+            // On check si l'utilisateur à fourni les bons identifiants
+            if ($auth->checkAuth($_POST['email'], $_POST['password'])) {
                 $_SESSION['email'] = $_POST['email'];
                 header('Location: ../index.php');
             } else {
