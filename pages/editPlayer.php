@@ -23,9 +23,11 @@ if ($_SESSION['email'] == '') {
 require_once('player.php');
 $player = new Player();
 
+//Decryptage de l'id du joueur
 $idPlayer = base64_decode($_GET['id']);
-$idPlayer= openssl_decrypt($idPlayer, "aes-256-ecb", "toto");
+$idPlayer = openssl_decrypt($idPlayer, "aes-256-ecb", "toto");
 
+//Récupération des données du joueur
 $p = $player->getPlayer($idPlayer);
 
 while ($data = $p->fetch()) {
@@ -68,8 +70,9 @@ if (isset($_POST["edit"])) {
                     } else {
                         $ppicture = $_POST['picture'];
                     }
-
+                    //Modification du joueur
                     $player->updatePlayer($_GET['id'], $_POST['name'], $_POST['lastname'], $ppicture, $_POST['license'], $_POST['birthday'], $_POST['weight'], $_POST['size'], $_POST['position'], $pState, $pComment);
+                    //Affichage des modifications effectuées
                     $p = $player->getPlayer($_GET['id']);
                     while ($data = $p->fetch()) {
                         $name = $data['prenom'];
@@ -98,8 +101,8 @@ if (isset($_POST["edit"])) {
     }
 }
 
-if(isset($_POST["return"])){
-    header("location: displayPlayers.php"); 
+if (isset($_POST["return"])) {
+    header("location: displayPlayers.php");
 }
 
 ?>

@@ -21,6 +21,16 @@
     if ($_SESSION['email'] == '') {
         header('Location: login.php');
     }
+
+    //Suppression d'un joueur
+    require_once('player.php');
+    if (!empty($_GET["deletePlayer"])){
+        $player = new Player();
+        //Cryptage de l'id du joueur dans l'url
+        $id_del = base64_decode($_GET['deletePlayer']);
+        $id_del = openssl_decrypt($id_del, "aes-256-ecb", "toto");
+        $player->deletePlayer($id_del);
+    }
     ?>
     
 
@@ -47,6 +57,7 @@
         <h2 class="m-5 text-3xl font-bold text-center">Les joueurs</h2>
             <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <?php
+                    //Affichage de la liste des joueurs
                     require_once('player.php');
                     $player = new Player();
                     echo $player->displayPlayers();
@@ -55,13 +66,7 @@
         </section>
     </form>
     <?php
-    require_once('player.php');
-    if (!empty($_GET["deletePlayer"])){
-        $player = new Player();
-        $id_del = base64_decode($_GET['deletePlayer']);
-        $id_del = openssl_decrypt($id_del, "aes-256-ecb", "toto");
-        $player->deletePlayer($id_del);
-    }
+
 ?>
 
 
