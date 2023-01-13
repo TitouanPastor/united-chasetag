@@ -137,15 +137,15 @@ class Matchs
         }
 
         $display = '
-        <div class="w-[300px] border '.$bg_match.' border-black h-auto rounded hover:scale-[102%] hover:shadow-xl transition-all">
+        <div class="w-[300px] border-2 '.$bg_match.'  border-purple-800  h-auto rounded hover:scale-[102%] hover:shadow-xl transition-all">
                 <div class="flex flex-col justify-between py-4 h-full">
-                    <div class="flex flex-col border-b border-black pb-4">
+                    <div class="flex flex-col border-b border-purple-800 pb-4">
                     '.$span_is_finished.'
                         <span class="text-sm px-4">' . date('d/m/Y', strtotime($date)) . ' à ' . date('H:i', strtotime($hour)) . '</span>
                         <span class="text-2xl font-medium px-4">' . $location . '</span>
                         '.$div_domi_ext.'
                     </div>
-                    <div class="border-b border-black h-full">
+                    <div class="border-b border-purple-800  h-full">
                         <ul class="p-4">';
 
         // On affiche les joeurs du match
@@ -165,7 +165,7 @@ class Matchs
                 $resultat = 'Match nul';
             }
             $display .= '
-                    <div class="w-full flex items-center justify-center py-2 border-b border-black">
+                    <div class="w-full flex items-center justify-center py-2 border-b border-purple-800 ">
                         <span class="px-4 font-medium">' . $resultat . ' :</span>
                         <span class="px-4 font-medium">' . $score_equipe . ' - ' . $score_adv . '</span>
                     </div>';

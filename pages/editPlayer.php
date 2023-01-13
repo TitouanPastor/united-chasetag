@@ -65,15 +65,55 @@ if (isset($_POST["edit"])) {
                     } else {
                         $pComment = $_POST['comment'];
                     }
-                    if (empty($_POST['picture'])) {
+                    if (empty($_FILES['picture'])) {
                         $ppicture = $picture;
                     } else {
-                        $ppicture = $_POST['picture'];
+                        $ppicture = $_FILES['picture'];
+                    }
+                    // On récupère les informations du fichier upload par l'utilisateur
+                    $file = $_FILES['picture'];
+                    // On récupère le nom du fichier
+                    $fileName = $_FILES['picture']['name'];
+                    // On récupère le chemin temporaire du fichier
+                    $fileTmpName = $_FILES['picture']['tmp_name'];
+                    // On récupère la taille du fichier
+                    $fileSize = $_FILES['picture']['size'];
+                    // On récupère le code d'erreur du fichier
+                    $fileError = $_FILES['picture']['error'];
+                    // On récupère le type du fichier
+                    $fileType = $_FILES['picture']['type'];
+
+                    // On récupère l'extension du fichier
+                    $fileExt = explode('.', $fileName);
+                    // On récupère l'extension du fichier en minuscule
+                    $fileActualExt = strtolower(end($fileExt));
+
+                    // On définit les extensions autorisées
+                    $allowed = array('jpg', 'jpeg', 'png');
+
+                    if (in_array($fileActualExt, $allowed)) {
+                        if ($fileError === 0) {
+                            if ($fileSize < 5000000) {
+                                // On créé un nom unique pour le fichier
+                                $fileNameNew = uniqid('', true).".".$fileActualExt;
+                                // On déplace le fichier dans le dossier imgplayers
+                                $fileDestination = '../imgplayers/'.$fileNameNew;
+                                move_uploaded_file($fileTmpName, $fileDestination);
+                                $ppicture = $fileNameNew;
+                                // succès
+                            } else {
+                                echo "Votre fichier est trop volumineux! taille max : 5Mo";
+                            }
+                        } else {
+                            echo "Erreur de téléchargement, veuillez réessayer.";
+                        }
+                    } else {
+                        echo "Vous ne pouvez pas télécharger ce type de fichier! Formats acceptés : jpg, jpeg, png. Taille max : 5M";
                     }
                     //Modification du joueur
-                    $player->updatePlayer($_GET['id'], $_POST['name'], $_POST['lastname'], $ppicture, $_POST['license'], $_POST['birthday'], $_POST['weight'], $_POST['size'], $_POST['position'], $pState, $pComment);
+                    $player->updatePlayer($idPlayer, $_POST['name'], $_POST['lastname'], $ppicture, $_POST['license'], $_POST['birthday'], $_POST['weight'], $_POST['size'], $_POST['position'], $pState, $pComment);
                     //Affichage des modifications effectuées
-                    $p = $player->getPlayer($_GET['id']);
+                    $p = $player->getPlayer($idPlayer);
                     while ($data = $p->fetch()) {
                         $name = $data['prenom'];
                         $lastname = $data['nom'];
@@ -129,7 +169,7 @@ if (isset($_POST["return"])) {
         <section class="grid place-items-center mx-10">
             <div class="my-6 px-9  border-2 border-purple-800 rounded ">
                 <h2 class="m-5 text-4xl font-bold text-center">Modifier <?php echo $name . ' ' . $lastname; ?></h2>
-                <form class="block w-full max-w-lg mb-10" action="editPlayer.php?id=<?php echo $_GET['id'] ?>" method="post">
+                <form class="block w-full max-w-lg mb-10" action="editPlayer.php?id=<?php echo $_GET["id"] ?>" method="post" enctype="multipart/form-data">
 
                     <div class="flex flex-wrap -mx-3 mb-6">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
