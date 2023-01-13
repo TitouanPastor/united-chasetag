@@ -167,7 +167,7 @@ class Player
                 </div>
                 <div class="flex-1 min-w-0">
                     <p class="text-m font-medium text-gray-900 truncate ">
-                        [' . $licence . '] - ' . $lastname . ' ' . $name . ' - ' . $year . '- ' . $weight . ' - ' . $size . '
+                        [' . $licence . '] - ' . $lastname . ' ' . $name . ' - ' . $year . ' ans - ' . $weight . ' KG - ' . $size . ' CM
                     </p>
                     <p class="text-m text-gray-500 truncate dark:text-gray-400">
                         ' . $position . ' - ' . $state . '
