@@ -45,8 +45,8 @@
                 <h2>Confirmation</h2>
             </div>
             <div class="popupconfirm-body">
-                <p>Voulez-vous vraiment fermer les inscriptions à ce tournoi ?</p>
-                <p>Cette action va générer les poules et les matchs du tournoi.</p>
+                <p>Voulez-vous vraiment supprimer ce match ?</p>
+                <p>Cette action est irreversible</p>
                 <span class="idTournoi" style="display: none;"></span>
             </div>
             <div class="popupconfirm-footer">
