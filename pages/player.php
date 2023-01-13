@@ -68,7 +68,7 @@ class Player
         $picture = $this->IMG_DIR . $picture;
 
         //Code html pour afficher le joueur
-        return '<li class="pb-3 sm:pb-4" >
+        return '<li class="pb-3 sm:pb-4 " >
             <div class="flex items-center space-x-4 my-4">
                 <div class="flex-shrink-0">
                     <img class="w-16 h-16 rounded-full" src="' . $picture . '" alt="Photo de ' . $lastname . ' ' . $name . '">
