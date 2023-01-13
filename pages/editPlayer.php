@@ -166,7 +166,7 @@ if (isset($_POST["return"])) {
                 <a href="login.php" class="flex items-center gap-2 w-fit bg-violet-700 transition-colors p-2 rounded hover:bg-violet-800"><i class="flex fi fi-rr-exit"></i>Se déconnecter</a>
             </div>
         </nav>
-        <section class="grid place-items-center mx-10">
+        <section class="grid place-items-center ml-72 mr-12">
             <div class="my-6 px-9  border-2 border-purple-800 rounded ">
                 <h2 class="m-5 text-4xl font-bold text-center">Modifier <?php echo $name . ' ' . $lastname; ?></h2>
                 <form class="block w-full max-w-lg mb-10" action="editPlayer.php?id=<?php echo $_GET["id"] ?>" method="post" enctype="multipart/form-data">

@@ -96,7 +96,7 @@
             </div>
         </nav>
 
-        <section class="h-screen flex items-center justify-center mx-10">
+        <section class="grid place-items-center ml-72 mr-12 ">
             <div class="my-6 px-9  border-2 border-purple-800 rounded ">
                 <h2 class="m-5 text-4xl font-bold text-center">Ajouter un match</h2>
                 <form class="block w-full max-w-lg mb-10" action="addMatch.php" method="post">
