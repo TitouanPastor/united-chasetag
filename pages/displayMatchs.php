@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../dist/output.css" rel="stylesheet">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel="stylesheet" href='../dist/popup.css'>
     <title>Liste des matchs - U N I T E D</title>
 </head>
 
@@ -37,6 +38,25 @@
 
 
     ?>
+
+    <div class="popupconfirm">
+        <div class="popupconfirm-content">
+            <div class="popupconfirm-header">
+                <h2>Confirmation</h2>
+            </div>
+            <div class="popupconfirm-body">
+                <p>Voulez-vous vraiment fermer les inscriptions à ce tournoi ?</p>
+                <p>Cette action va générer les poules et les matchs du tournoi.</p>
+                <span class="idTournoi" style="display: none;"></span>
+            </div>
+            <div class="popupconfirm-footer">
+                <form action="post">
+                    <input style="background-color: var(--btn-submit); cursor:pointer;" type="button" onclick="popupYes()" class="popupconfirm-button" value="Oui">
+                    <input style="background-color: var(--btn-bouton); cursor:pointer;" type="button" onclick="popupNo()" class="popupconfirm-button" value="Non">
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- Navbar latérale -->
     <nav class="flex flex-col justify-between w-60 h-screen fixed bg-gradient-to-br from-violet-700 to-violet-900 text-white border-slate-500 border-r-[1px]">
@@ -69,5 +89,20 @@
     </main>
 
 </body>
+<script>
+    function openPopUp(a) {
+        document.querySelector('.popupconfirm').style.display = 'flex';
+        document.querySelector('.idTournoi').innerHTML = a.getAttribute('value');
+    }
+
+    function popupYes() {
+        document.querySelector('.popupconfirm').style.display = 'none';
+        window.location.href = document.querySelector('.idTournoi').innerHTML;
+    }
+
+    function popupNo() {
+        document.querySelector('.popupconfirm').style.display = 'none';
+    }
+</script>
 
 </html>

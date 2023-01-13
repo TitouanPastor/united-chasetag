@@ -179,7 +179,7 @@ class Matchs
             $display .= '
                     <div class="w-full flex items-center justify-evenly pt-4 ">
                         <a class="px-4 font-medium" href="editMatch.php?id=' . $idMatchencode . '">Modifier</a>
-                        <a class="px-4 font-medium" href="displayMatchs.php?id_del=' . $idMatchencode . '">Supprimer</a>
+                        <a class="px-4 font-medium" value="displayMatchs.php?id_del=' . $idMatchencode . '" href="" onclick="openPopUp(this)" >Supprimer</a>
                     </div>
                 </div>
             </div>

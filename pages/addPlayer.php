@@ -97,6 +97,7 @@ if (isset($_POST["add"])) {
                         
                     $player->addPlayer($_POST['name'], $_POST['lastname'], $picture, $_POST['license'], $_POST['birthday'], $_POST['weight'], $_POST['size'], $_POST['position']);
                     $msg_error = "Joueur ajouté";
+                    header("location: displayPlayers.php"); 
                 }else{
                     $msg_error = "Joueur déjà existant";
                 }
