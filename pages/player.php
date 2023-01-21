@@ -94,7 +94,7 @@ class Player
                 </div>
                 <div class="inline-flex items-center text-base font-semibold text-gray-900 ">
                     <a href="editPlayer.php?id=' . $idPlayerEncode . '" class="p-2"> MODIFIER </a> 
-                    <a value="displayPlayers.php?deletePlayer=' . $idPlayerEncode . '" href="" onclick="openPopUp(this)" class="p-2" name="delete"> SUPPRIMER </a>
+                    <a value="displayPlayers.php?deletePlayer=' . $idPlayerEncode . '" href="#" onclick="openPopUp(this)" class="p-2" name="delete"> SUPPRIMER </a>
                 </div>
             </div>
         </li>';
