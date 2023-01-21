@@ -17,7 +17,7 @@
 
     // On vérifie si la personne est connectée, sinon on la redirige vers la page de connexion
     if ($_SESSION['email'] == '') {
-        header('Location: login.php');
+        header('Location: pages/login.php');
     }
 
     ?>
@@ -42,8 +42,14 @@
         </nav>
 
         <!-- Contenu -->
-        <section class="w-full">
 
+
+        <section class="flex w-full h-screen bg-repeat-space bg-[url('../img/team-logo-black.png')] ">
+            <div class=" m-auto">
+            <span class="p-52 rounded-md text-center text-black text-4xl"> ➡️ Bienvenue sur l'application United Chasetag !</span>
+            </div>
+                
+            
         </section>
     </main>
 </body>

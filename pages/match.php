@@ -9,72 +9,93 @@ class Matchs
     {
         require_once('../BDD.php');
         $this->sql = new connectBDD();
-        require_once('Player.php');
+        require_once('player.php');
         $this->player = new Player();
     }
 
     // Fonction permettant d'ajouter un match avec les différents paramètres
     public function addMatch($date, $hour, $opponents, $location, $domi_ext)
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('INSERT INTO Game VALUES (null, :date, :hour, :opponents, :location, null, null, :domi_ext, null)');
-        $req->execute(array(
-            'date' => $date,
-            'hour' => $hour,
-            'opponents' => $opponents,
-            'location' => $location,
-            'domi_ext' => $domi_ext
-        ));
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('INSERT INTO Game VALUES (null, :date, :hour, :opponents, :location, null, null, :domi_ext, null)');
+            $req->execute(array(
+                'date' => $date,
+                'hour' => $hour,
+                'opponents' => $opponents,
+                'location' => $location,
+                'domi_ext' => $domi_ext
+            ));
+        }catch(Exception $e){
+            echo('Erreur lors de l\'ajout d\'un match : ' . $e->getMessage());
+        }
+       
     }
 
     // Fonction permettant d'ajouter un joueur à un match avec son role pendant le match
     public function addMatchPlayer($id_match, $id_player, $role)
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('INSERT INTO Participer VALUES (:id_player, :id_match, :role, null)');
-        $req->execute(array(
-            'id_match' => $id_match,
-            'id_player' => $id_player,
-            'role' => $role
-        ));
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('INSERT INTO Participer VALUES (:id_player, :id_match, :role, null)');
+            $req->execute(array(
+                'id_match' => $id_match,
+                'id_player' => $id_player,
+                'role' => $role
+            ));
+        }catch(Exception $e){
+            echo('Erreur lors de l\'ajout de la participation : ' . $e->getMessage());
+        }
     }
 
     // Fonction qui permet de supprimer tout les joueurs participant à un match
     public function dropMatchAllPlayers($id_match)
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('DELETE FROM Participer WHERE id_game = :id_match');
-        $req->execute(array(
-            'id_match' => $id_match
-        ));
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('DELETE FROM Participer WHERE id_game = :id_match');
+            $req->execute(array(
+                'id_match' => $id_match
+            ));
+        }catch(Exception $e){
+            echo('Erreur lors de la supression de la participation : ' . $e->getMessage());
+        }
     }
 
     //  Fonction permettant de supprimer entièrement un match
     public function dropMatch($id_match)
     {
-        $sql = $this->sql->getConnection();
-        // On drop tout les joueurs du match
-        $this->dropMatchAllPlayers($id_match);
-        // On drop le match
-        $req = $sql->prepare('DELETE FROM Game WHERE id_game = :id_match');
-        $req->execute(array(
-            'id_match' => $id_match
-        ));
+        try{
+            $sql = $this->sql->getConnection();
+            // On drop tout les joueurs du match
+            $this->dropMatchAllPlayers($id_match);
+            // On drop le match
+            $req = $sql->prepare('DELETE FROM Game WHERE id_game = :id_match');
+            $req->execute(array(
+                'id_match' => $id_match
+            ));
+        }catch(Exception $e){
+            echo('Erreur lors de la suppresion du match: ' . $e->getMessage());
+        }
     }
 
 
     // Fonction permettant de savori si un match existe ou non
     public function matchExist($date, $hour)
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT * FROM Game WHERE date_match = :date AND heure_match = :hour');
-        $req->execute(array(
-            'date' => $date,
-            'hour' => $hour
-        ));
-        //si le resultat de la requete à plus d'une ligne, alors le match existe déjà
-        if ($req->rowCount() > 0) {
-            return true;
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('SELECT * FROM Game WHERE date_match = :date AND heure_match = :hour');
+            $req->execute(array(
+                'date' => $date,
+                'hour' => $hour
+            ));
+            //si le resultat de la requete à plus d'une ligne, alors le match existe déjà
+            if ($req->rowCount() > 0) {
+                return true;
+            }
+        }catch(Exception $e){
+            echo('Erreur lors de la vérification de l\'existance du match : ' . $e->getMessage());
         }
         return false;
     }
@@ -82,37 +103,49 @@ class Matchs
     // Fonction retournant l'id d'un match à partir de sa date et de son heure
     public function getIdMatch($date, $hour)
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT id_game FROM Game WHERE date_match = :date AND heure_match = :hour');
-        $req->execute(array(
-            'date' => $date,
-            'hour' => $hour
-        ));
-        $id = $req->fetch();
-        return $id['id_game'];
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('SELECT id_game FROM Game WHERE date_match = :date AND heure_match = :hour');
+            $req->execute(array(
+                'date' => $date,
+                'hour' => $hour
+            ));
+            $id = $req->fetch();
+            return $id['id_game'];
+        }catch(Exception $e){
+            echo('Erreur lors de la recherche du match : ' . $e->getMessage());
+        }
     }
 
     // Fonction retournant un match avec son id
     public function getMatch($id)
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT * FROM Game WHERE id_game = :id');
-        $req->execute(array(
-            'id' => $id
-        ));
-        return $req;
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('SELECT * FROM Game WHERE id_game = :id');
+            $req->execute(array(
+                'id' => $id
+            ));
+            return $req;
+        }catch(Exception $e){
+            echo('Erreur lors de la recherche du match : ' . $e->getMessage());
+        }
     }
 
     // Fonction permettant de retourner dans une chaine de caractères les infos d'un match
     public function getMatchInfos($id)
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT date_match, heure_match, nom_eq_adv FROM Game WHERE id_game = :id');
-        $req->execute(array(
-            'id' => $id
-        ));
-        $infos = $req->fetch();
-        return 'Le ' . date('d/m/Y', strtotime($infos['date_match'])) . ' à ' . date('H:i', strtotime($infos['heure_match'])) . ' contre ' . $infos['nom_eq_adv'];
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('SELECT date_match, heure_match, nom_eq_adv FROM Game WHERE id_game = :id');
+            $req->execute(array(
+                'id' => $id
+            ));
+            $infos = $req->fetch();
+            return 'Le ' . date('d/m/Y', strtotime($infos['date_match'])) . ' à ' . date('H:i', strtotime($infos['heure_match'])) . ' contre ' . $infos['nom_eq_adv'];
+        }catch(Exception $e){
+            echo('Erreur lors de la récupération des informations du match : ' . $e->getMessage());
+        }
     }
 
     // Fonction permettant de retourner dans une chaine de caractères HTML les infos d'un match complètes (disponible sur la page de liste des matchs)
@@ -200,52 +233,69 @@ class Matchs
     // Fonction permettant d'afficher au format HTML tous les matchs
     public function displayAllMatchs()
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT * FROM Game ORDER BY date_match');
-        $req->execute();
-        $matchs = $req->fetchAll();
-        $display = "";
-        foreach ($matchs as $match) {
-            $display .= $this->displayAMatch($match['id_game'], $match['date_match'], $match['heure_match'], $match['nom_eq_adv'], $match['lieu'], $match['score_equipe'], $match['score_adv'], $match['domi_ext']);
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('SELECT * FROM Game ORDER BY date_match');
+            $req->execute();
+            $matchs = $req->fetchAll();
+            $display = "";
+            foreach ($matchs as $match) {
+                $display .= $this->displayAMatch($match['id_game'], $match['date_match'], $match['heure_match'], $match['nom_eq_adv'], $match['lieu'], $match['score_equipe'], $match['score_adv'], $match['domi_ext']);
+            }
+            // Si il n'y a aucun match à afficher, on affiche un message
+            if ($display == "") {
+                $display = '<span class="text-xl font-medium">Aucun match à afficher</span>';
+            }
+            return $display;
+        }catch(Exception $e){
+            echo('Erreur lors de l\'affichage des match : ' . $e->getMessage());
         }
-        // Si il n'y a aucun match à afficher, on affiche un message
-        if ($display == "") {
-            $display = '<span class="text-xl font-medium">Aucun match à afficher</span>';
-        }
-        return $display;
+
     }
 
     // Fonction permettant de modifier un match dans le BDD
     public function editMatch($id, $date, $hour, $opponents, $location, $score_equipe, $score_adv)
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('UPDATE Game SET date_match = :date, heure_match = :hour, nom_eq_adv = :opponents, lieu = :location, score_equipe = :score_equipe, score_adv = :score_adv WHERE id_game = :id');
-        $req->execute(array(
-            'id' => $id,
-            'date' => $date,
-            'hour' => $hour,
-            'opponents' => $opponents,
-            'location' => $location,
-            'score_equipe' => $score_equipe,
-            'score_adv' => $score_adv
-        ));
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('UPDATE Game SET date_match = :date, heure_match = :hour, nom_eq_adv = :opponents, lieu = :location, score_equipe = :score_equipe, score_adv = :score_adv WHERE id_game = :id');
+            $req->execute(array(
+                'id' => $id,
+                'date' => $date,
+                'hour' => $hour,
+                'opponents' => $opponents,
+                'location' => $location,
+                'score_equipe' => $score_equipe,
+                'score_adv' => $score_adv
+            ));
+        }catch(Exception $e){
+            echo('Erreur lors de la modification d\'un match : ' . $e->getMessage());
+        }
     }
 
     public function matchToFinished($idMatch) {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('UPDATE Game SET statut = 1 WHERE id_game = :id');
-        $req->execute(array(
-            'id' => $idMatch
-        ));
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('UPDATE Game SET statut = 1 WHERE id_game = :id');
+            $req->execute(array(
+                'id' => $idMatch
+            ));
+        }catch(Exception $e){
+            echo('Erreur lors de la verification si le match est terminé : ' . $e->getMessage());
+        }
     }
 
     public function getMatchStatus($idMatch) {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT statut FROM Game WHERE id_game = :id');
-        $req->execute(array(
-            'id' => $idMatch
-        ));
-        $status = $req->fetch();
-        return $status['statut'];
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('SELECT statut FROM Game WHERE id_game = :id');
+            $req->execute(array(
+                'id' => $idMatch
+            ));
+            $status = $req->fetch();
+            return $status['statut'];
+        }catch(Exception $e){
+            echo('Erreur lors de la recuperation du status de match: ' . $e->getMessage());
+        }
     }
 }

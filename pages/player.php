@@ -15,33 +15,41 @@ class Player
     //Requete pour ajouter un joueur dans la base de données 
     public function addPlayer($name, $lastname, $picture_path, $lience, $birthday, $weight, $size, $position)
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('INSERT INTO Joueur  VALUES (null, :name, :lastname, :picture_path, :lience, :birthday, :size, :weight, :position, null, null)');
-        $req->execute(array(
-            'name' => $name,
-            'lastname' => $lastname,
-            'picture_path' => $picture_path,
-            'lience' => $lience,
-            'birthday' => $birthday,
-            'weight' => $weight,
-            'size' => $size,
-            'position' => $position
-        ));
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('INSERT INTO Joueur  VALUES (null, :name, :lastname, :picture_path, :lience, :birthday, :size, :weight, :position, null, null)');
+            $req->execute(array(
+                'name' => $name,
+                'lastname' => $lastname,
+                'picture_path' => $picture_path,
+                'lience' => $lience,
+                'birthday' => $birthday,
+                'weight' => $weight,
+                'size' => $size,
+                'position' => $position
+            ));
+        }catch(Exception $e){
+            echo('Erreur lors de l\'ajout d\'un joueur ' . $e->getMessage());
+        }
     }
 
     //Retourne true si le joueur existe déjà dans la base de données false sinon
     public function playerExist($licence, $name, $lastname)
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT * FROM Joueur WHERE numero_de_licence = :licence OR (upper(nom )= upper(:name) AND upper(prenom) = upper(:lastname))');
-        $req->execute(array(
-            'licence' => $licence,
-            'name' => $name,
-            'lastname' => $lastname
-        ));
-        //si le resultat de la requete à plus d'une ligne, alors le joueur existe déjà
-        if ($req->rowCount() > 0) {
-            return true;
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('SELECT * FROM Joueur WHERE numero_de_licence = :licence OR (upper(nom )= upper(:name) AND upper(prenom) = upper(:lastname))');
+            $req->execute(array(
+                'licence' => $licence,
+                'name' => $name,
+                'lastname' => $lastname
+            ));
+            //si le resultat de la requete à plus d'une ligne, alors le joueur existe déjà
+            if ($req->rowCount() > 0) {
+                return true;
+            }
+        }catch(Exception $e){
+            echo('Erreur lors de la verification de si un joueur existe deja : ' . $e->getMessage());
         }
         return false;
     }
@@ -95,29 +103,37 @@ class Player
     //Retourne l'id du joueur
     public function getIdPlayer($licence)
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT id_joueur FROM Joueur WHERE numero_de_licence = :licence');
-        $req->execute(array(
-            'licence' => $licence
-        ));
-        $id = $req->fetch();
-        return $id['id_joueur'];
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('SELECT id_joueur FROM Joueur WHERE numero_de_licence = :licence');
+            $req->execute(array(
+                'licence' => $licence
+            ));
+            $id = $req->fetch();
+            return $id['id_joueur'];
+        }catch(Exception $e){
+            echo('Erreur lors de la recuperation du joueur: ' . $e->getMessage());
+        }
     }
 
     //Retourne les joueurs sous forme de tableau <ul>
     public function displayPlayers()
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT * FROM Joueur order by nom, prenom');
-        $req->execute();
-        $players = $req->fetchAll();
-        $req->closeCursor();
-        $this->sql->closeConnection();
-        $display = "";
-        foreach ($players as $player) {
-            $display .= $this->displayAPlayer($player['nom'], $player['prenom'], $player['numero_de_licence'], $player['photo'], $player['date_de_naissance'], $player['poid'], $player['taille'], $player['poste_prefere'], $player['statut'], $player['commentaire'], $player['id_joueur']);
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('SELECT * FROM Joueur order by nom, prenom');
+            $req->execute();
+            $players = $req->fetchAll();
+            $req->closeCursor();
+            $this->sql->closeConnection();
+            $display = "";
+            foreach ($players as $player) {
+                $display .= $this->displayAPlayer($player['nom'], $player['prenom'], $player['numero_de_licence'], $player['photo'], $player['date_de_naissance'], $player['poid'], $player['taille'], $player['poste_prefere'], $player['statut'], $player['commentaire'], $player['id_joueur']);
+            }
+            return $display;
+        }catch(Exception $e){
+            echo('Erreur lors de l\'affichage des joueurs : ' . $e->getMessage());
         }
-        return $display;
     }
 
     //Affichage des joueurs dans la page des matchs
@@ -190,35 +206,45 @@ class Player
         </li>';
     }
 
+    //Affichage des joueurs pour les selectionner
     public function displayPlayersSelection()
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT * FROM Joueur where statut = "Actif" order by nom, prenom');
-        $req->execute();
-        $players = $req->fetchAll();
-        $req->closeCursor();
-        $this->sql->closeConnection();
-        $display = "";
-        foreach ($players as $player) {
-            $display .= $this->displayAPlayerSelection($player['nom'], $player['prenom'], $player['numero_de_licence'], $player['photo'], $player['date_de_naissance'], $player['poid'], $player['taille'], $player['poste_prefere'], $player['statut'], $player['commentaire']);
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('SELECT * FROM Joueur where statut = "Actif" order by nom, prenom');
+            $req->execute();
+            $players = $req->fetchAll();
+            $req->closeCursor();
+            $this->sql->closeConnection();
+            $display = "";
+            foreach ($players as $player) {
+                $display .= $this->displayAPlayerSelection($player['nom'], $player['prenom'], $player['numero_de_licence'], $player['photo'], $player['date_de_naissance'], $player['poid'], $player['taille'], $player['poste_prefere'], $player['statut'], $player['commentaire']);
+            }
+        }catch(Exception $e){
+            echo('Erreur lors de l\'affichage des joueurs : ' . $e->getMessage());
         }
         return $display;
     }
 
+    //selection du role d'un joueur participant a un match
     public function playerIsPlayingAMatch($id_match, $id_player)
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT role FROM Participer WHERE id_joueur = :id_player AND id_game = :id_match order by role');
-        $req->execute(array(
-            'id_player' => $id_player,
-            'id_match' => $id_match
-        ));
-        //si le resultat de la requete à plus d'une ligne, alors le joueur existe déjà
-        if ($req->rowCount() > 0) {
-            $res = $req->fetch();
-            return $res['role'];
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('SELECT role FROM Participer WHERE id_joueur = :id_player AND id_game = :id_match order by role');
+            $req->execute(array(
+                'id_player' => $id_player,
+                'id_match' => $id_match
+            ));
+            //si le resultat de la requete à plus d'une ligne, alors le joueur existe déjà
+            if ($req->rowCount() > 0) {
+                $res = $req->fetch();
+                return $res['role'];
+            }
+            return false;
+        }catch(Exception $e){
+            echo('Erreur lors de l\'affichage du role du joueur : ' . $e->getMessage());
         }
-        return false;
     }
 
     public function displayAPlayerForExistingMatch($id_match, $id_player, $name, $lastname, $licence, $picture, $birthday, $weight, $size, $position, $state, $comment)
@@ -279,43 +305,58 @@ class Player
         </li>';
     }
 
+    // Affiche tous les joueurs pour un match existant
     public function displayPlayersForExistingMatch($id_match)
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT * FROM Joueur order by nom, prenom');
-        $req->execute();
-        $players = $req->fetchAll();
-        $display = "";
-        foreach ($players as $player) {
-            $display .= $this->displayAPlayerForExistingMatch($id_match, $player['id_joueur'], $player['nom'], $player['prenom'], $player['numero_de_licence'], $player['photo'], $player['date_de_naissance'], $player['poid'], $player['taille'], $player['poste_prefere'], $player['statut'], $player['commentaire']);
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('SELECT * FROM Joueur order by nom, prenom');
+            $req->execute();
+            $players = $req->fetchAll();
+            $display = "";
+            foreach ($players as $player) {
+                $display .= $this->displayAPlayerForExistingMatch($id_match, $player['id_joueur'], $player['nom'], $player['prenom'], $player['numero_de_licence'], $player['photo'], $player['date_de_naissance'], $player['poid'], $player['taille'], $player['poste_prefere'], $player['statut'], $player['commentaire']);
+            }
+            return $display;
+        }catch(Exception $e){
+            echo('Erreur lors de l\'affichage des joueurs : ' . $e->getMessage());
         }
-        return $display;
     }
 
+    
     public function displayPlayersFromMatch($idMatch)
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT j.nom, j.prenom, j.photo, j.date_de_naissance, p.role FROM Joueur as j, Participer as p WHERE j.id_joueur = p.id_joueur AND p.id_game = :idMatch order by p.role DESC');
-        $req->execute(array('idMatch' => $idMatch));
-        $players = $req->fetchAll();
-        $display = "";
-        foreach ($players as $player) {
-            $display .= $this->displayPlayerSummary($player['nom'], $player['prenom'], $player['photo'], $player['date_de_naissance'], $player['role']);
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('SELECT j.nom, j.prenom, j.photo, j.date_de_naissance, p.role FROM Joueur as j, Participer as p WHERE j.id_joueur = p.id_joueur AND p.id_game = :idMatch order by p.role DESC');
+            $req->execute(array('idMatch' => $idMatch));
+            $players = $req->fetchAll();
+            $display = "";
+            foreach ($players as $player) {
+                $display .= $this->displayPlayerSummary($player['nom'], $player['prenom'], $player['photo'], $player['date_de_naissance'], $player['role']);
+            }
+            return $display;
+        }catch(Exception $e){
+            echo('Erreur lors de l\'affichage des joueurs : ' . $e->getMessage());
         }
-        return $display;
     }
 
+    //Affiche les joueurs pour l'evaluation
     public function displayPlayersForEvaluation($idMatch)
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT j.nom, j.prenom, j.photo, j.date_de_naissance, p.role, p.note FROM Joueur as j, Participer as p WHERE j.id_joueur = p.id_joueur AND p.id_game = :idMatch order by p.role');
-        $req->execute(array('idMatch' => $idMatch));
-        $players = $req->fetchAll();
-        $display = "";
-        foreach ($players as $player) {
-            $display .= $this->displayPlayerSummaryForEvaluation($player['nom'], $player['prenom'], $player['photo'], $player['date_de_naissance'], $player['role'], $player['note']);
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('SELECT j.nom, j.prenom, j.photo, j.date_de_naissance, p.role, p.note FROM Joueur as j, Participer as p WHERE j.id_joueur = p.id_joueur AND p.id_game = :idMatch order by p.role');
+            $req->execute(array('idMatch' => $idMatch));
+            $players = $req->fetchAll();
+            $display = "";
+            foreach ($players as $player) {
+                $display .= $this->displayPlayerSummaryForEvaluation($player['nom'], $player['prenom'], $player['photo'], $player['date_de_naissance'], $player['role'], $player['note']);
+            }
+            return $display;
+        }catch(Exception $e){
+            echo('Erreur lors de l\'affichage des joueurs : ' . $e->getMessage());
         }
-        return $display;
     }
 
     public function displayPlayerSummaryForEvaluation($name, $surname, $picture, $birthday, $state, $note = 1)
@@ -413,18 +454,24 @@ class Player
         </li>';
     }
 
+    //Recuperatin des noms des joueurs d'un match
     public function getPlayerNameArrayFromMatch($idMatch)
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT j.nom, j.numero_de_licence FROM Joueur j, Participer p WHERE j.id_joueur = p.id_joueur AND p.id_game = :idMatch ORDER BY p.role desc');
-        $req->execute(array(
-            'idMatch' => $idMatch
-        ));
-        return $req;
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('SELECT j.nom, j.numero_de_licence FROM Joueur j, Participer p WHERE j.id_joueur = p.id_joueur AND p.id_game = :idMatch ORDER BY p.role desc');
+            $req->execute(array(
+                'idMatch' => $idMatch
+            ));
+            return $req;
+        }catch(Exception $e){
+            echo('Erreur lors de l\'affichage des joueurs : ' . $e->getMessage());
+        }
     }
     //Ajout d'une note à un joueur pour un match
     public function addPlayerRating($idMatch, $idPlayer, $rating)
     {
+        try{
         $sql = $this->sql->getConnection();
         $req = $sql->prepare('UPDATE Participer SET note = :rating WHERE id_game = :idMatch AND id_joueur = :idPlayer');
         $req->execute(array(
@@ -432,56 +479,71 @@ class Player
             'idPlayer' => $idPlayer,
             'rating' => $rating
         ));
+    }catch(Exception $e){
+        echo('Erreur lors de l\'ajout de la note du joueurs : ' . $e->getMessage());
+    }
     }
 
     //Retourne un joueur en fonction de son ID
     public function getPlayer($id)
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT * FROM Joueur WHERE id_joueur = :id');
-        $req->execute(array(
-            'id' => $id
-        ));
-        return $req;
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('SELECT * FROM Joueur WHERE id_joueur = :id');
+            $req->execute(array(
+                'id' => $id
+            ));
+            return $req;
+        }catch(Exception $e){
+            echo('Erreur player non trouvé : ' . $e->getMessage());
+        }
     }
 
     //Modification d'un joueur 
     public function updatePlayer($id, $name, $lastname, $picture_path, $lience, $birthday, $weight, $size, $position, $state, $comment)
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('UPDATE Joueur SET nom = :lastname, prenom = :name, photo = :picture_path, numero_de_licence = :lience, date_de_naissance = :birthday, poid = :weight, taille = :size, poste_prefere = :position, commentaire = :comment, statut = :state WHERE id_joueur = :id');
-        $req->execute(array(
-            'id' => $id,
-            'name' => $name,
-            'lastname' => $lastname,
-            'picture_path' => $picture_path,
-            'lience' => $lience,
-            'birthday' => $birthday,
-            'weight' => $weight,
-            'size' => $size,
-            'position' => $position,
-            'comment' => $comment,
-            'state' => $state
-        ));
+        try {
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('UPDATE Joueur SET nom = :lastname, prenom = :name, photo = :picture_path, numero_de_licence = :lience, date_de_naissance = :birthday, poid = :weight, taille = :size, poste_prefere = :position, commentaire = :comment, statut = :state WHERE id_joueur = :id');
+            $req->execute(array(
+                'id' => $id,
+                'name' => $name,
+                'lastname' => $lastname,
+                'picture_path' => $picture_path,
+                'lience' => $lience,
+                'birthday' => $birthday,
+                'weight' => $weight,
+                'size' => $size,
+                'position' => $position,
+                'comment' => $comment,
+                'state' => $state
+            ));
+        }catch(Exception $e){
+            echo('Erreur lors de la modification d\'un joueur: ' . $e->getMessage());
+        }
     }
 
     //Vérifie si un joueur existe déjà (pour modification joueur)
     public function playerExistUpdate($licence, $name, $lastname, $id)
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('SELECT * FROM Joueur WHERE (numero_de_licence = :licence OR (upper(nom)= upper(:lastname) AND upper(prenom) = upper(:name)))');
-        $req->execute(array(
-            'licence' => $licence,
-            'name' => $name,
-            'lastname' => $lastname
-        ));
-        //Si le joueur existe déjà et que ce n'est pas le joueur en cours de modification
-        if ($req->rowCount() > 0) {
-            while ($data = $req->fetch()) {
-                if ($data['id_joueur'] != $id) {
-                    return true;
+        try {
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('SELECT * FROM Joueur WHERE (numero_de_licence = :licence OR (upper(nom)= upper(:lastname) AND upper(prenom) = upper(:name)))');
+            $req->execute(array(
+                'licence' => $licence,
+                'name' => $name,
+                'lastname' => $lastname
+            ));
+            //Si le joueur existe déjà et que ce n'est pas le joueur en cours de modification
+            if ($req->rowCount() > 0) {
+                while ($data = $req->fetch()) {
+                    if ($data['id_joueur'] != $id) {
+                        return true;
+                    }
                 }
             }
+        }catch(Exception $e){
+            echo('Erreur lors de la verification de si un joueur existe deja : ' . $e->getMessage());
         }
         return false;
     }
@@ -489,10 +551,14 @@ class Player
     //Suppression d'un joueur
     public function deletePlayer($id)
     {
-        $sql = $this->sql->getConnection();
-        $req = $sql->prepare('DELETE FROM Joueur WHERE id_joueur = :id');
-        $req->execute(array(
-            'id' => $id
-        ));
+        try{
+            $sql = $this->sql->getConnection();
+            $req = $sql->prepare('DELETE FROM Joueur WHERE id_joueur = :id');
+            $req->execute(array(
+                'id' => $id
+            ));
+        }catch(Exception $e){
+            echo('Erreur lors de la supression d\'un joueur: ' . $e->getMessage());
+        }
     }
 }
