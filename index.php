@@ -43,13 +43,20 @@
 
         <!-- Contenu -->
 
-
-        <section class="flex w-full h-screen bg-repeat-space bg-[url('../img/team-logo-black.png')] ">
-            <div class=" m-auto">
-            <span class="p-52 rounded-md text-center text-black text-4xl"> ➡️ Bienvenue sur l'application United Chasetag !</span>
+        <section class="flex w-full h-[100vh] place-items-center ml-72 mr-12">
+            <div class="w-full h-full flex-col flex justify-center gap-32 items-center p-10">
+                <div class="flex flex-col gap-4">
+                    <h1 class="text-5xl text-center font-semibold">Bienvenue sur United Chasetag</h1>
+                    <p class="text-2xl text-center">Vous pouvez dès à présent accéder au panel administrateur disponible à votre gauche.</p>
+                </div>
+                <div class="flex justify-center items-center gap-8">
+                    <img class="w-44" src="img/team-logo-black.png" alt="Logo United">
+                    <div class="flex flex-col gap-2 w-96">
+                        <h2 class="font-semibold text-xl">Le Chasetag</h2>
+                        <p>En compétition, les équipes s’affrontent sur une série de manches en un contre un, avec un système de points. Tout se joue sur un terrain de 12 mètres par 12 mètres, avec un parcours d’obstacles à éviter. Le chat a 20 secondes pour attraper la souris. S’il y parvient, il devient à son tour la souris. S’il échoue, l’adversaire qui a réussi à s’échapper marque un point.</p>
+                    </div>
+                </div>
             </div>
-                
-            
         </section>
     </main>
 </body>

@@ -1,4 +1,5 @@
 node_modules
+BDD.php
 build
 npm-debug.log
 .nyc
