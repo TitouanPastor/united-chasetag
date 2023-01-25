@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../dist/popup.css">
     <link href="../dist/output.css" rel="stylesheet">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
-    <link rel="stylesheet" href='../dist/popup.css'>
     <title>Listes des joueurs - U N I T E D</title>
 </head>
 
@@ -40,14 +40,14 @@
                 <h2>Confirmation</h2>
             </div>
             <div class="popupconfirm-body">
-                <p>Voulez-vous vraiment fermer les inscriptions à ce tournoi ?</p>
-                <p>Cette action va générer les poules et les matchs du tournoi.</p>
+                <p>Voulez-vous vraiment supprimer ce joueur ?</p>
+                <p>Attention : cette action va supprimer le joueur si il est affecté à un match.</p>
                 <span class="idTournoi" style="display: none;"></span>
             </div>
             <div class="popupconfirm-footer">
                 <form action="post">
-                    <input style="background-color: var(--btn-submit); cursor:pointer;" type="button" onclick="popupYes()" class="popupconfirm-button" value="Oui">
-                    <input style="background-color: var(--btn-bouton); cursor:pointer;" type="button" onclick="popupNo()" class="popupconfirm-button" value="Non">
+                    <input style="background-color: #FF0000; cursor:pointer;" type="button" onclick="popupYes()" class="popupconfirm-button" value="Oui">
+                    <input style="background-color: #00FF00; cursor:pointer;" type="button" onclick="popupNo()" class="popupconfirm-button" value="Non">
                 </form>
             </div>
         </div>

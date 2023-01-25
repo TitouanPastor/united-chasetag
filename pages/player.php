@@ -94,7 +94,7 @@ class Player
                 </div>
                 <div class="inline-flex items-center text-base font-semibold text-gray-900 ">
                     <a href="editPlayer.php?id=' . $idPlayerEncode . '" class="p-2"> MODIFIER </a> 
-                    <a value="displayPlayers.php?deletePlayer=' . $idPlayerEncode . '" href="#" onclick="openPopUp(this)" class="p-2" name="delete"> SUPPRIMER </a>
+                    <a title="Supprimer le joueur" class="cursor-pointer" value="displayPlayers.php?deletePlayer=' . $idPlayerEncode . '"  onclick="openPopUp(this)" class="p-2" name="delete"> SUPPRIMER </a>
                 </div>
             </div>
         </li>';
@@ -553,6 +553,12 @@ class Player
     {
         try{
             $sql = $this->sql->getConnection();
+            // Suppression des participations du joueur
+            $req = $sql->prepare('DELETE FROM Participer WHERE id_joueur = :id');
+            $req->execute(array(
+                'id' => $id
+            ));
+            // Suppression du joueur
             $req = $sql->prepare('DELETE FROM Joueur WHERE id_joueur = :id');
             $req->execute(array(
                 'id' => $id

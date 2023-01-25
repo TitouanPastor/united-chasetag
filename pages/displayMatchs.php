@@ -38,7 +38,7 @@
 
 
     ?>
-
+    <!-- Popup de confirmation de suppression de match -->
     <div class="popupconfirm">
         <div class="popupconfirm-content">
             <div class="popupconfirm-header">
@@ -46,13 +46,13 @@
             </div>
             <div class="popupconfirm-body">
                 <p>Voulez-vous vraiment supprimer ce match ?</p>
-                <p>Cette action est irreversible</p>
+                <p>Attention : Cette action est irreversible.</p>
                 <span class="idTournoi" style="display: none;"></span>
             </div>
             <div class="popupconfirm-footer">
                 <form action="post">
-                    <input style="background-color: var(--btn-submit); cursor:pointer;" type="button" onclick="popupYes()" class="popupconfirm-button" value="Oui">
-                    <input style="background-color: var(--btn-bouton); cursor:pointer;" type="button" onclick="popupNo()" class="popupconfirm-button" value="Non">
+                    <input style="background-color: #FF0000; cursor:pointer;" type="button" onclick="popupYes()" class="popupconfirm-button" value="Oui">
+                    <input style="background-color: #00FF00; cursor:pointer;" type="button" onclick="popupNo()" class="popupconfirm-button" value="Non">
                 </form>
             </div>
         </div>
