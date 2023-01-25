@@ -42,53 +42,53 @@ if ($_SESSION['email'] == '') {
 </nav>
 
 <body>
-    <section class="flex items-center justify-center mx-10">
-        <h2 class="m-5 text-3xl font-bold text-center">Statistiques</h2>
+    <section class="grid place-items-center ml-72 mr-12">
+        <h2 class="m-5 text-3xl font-bold text-center pt-4">Statistiques</h2>
     </section>
-    <section class="flex flex-col items-center justify-center mx-10">
+    <section class="grid place-items-center ml-72 mr-12">
         <h3 class="m-5 text-2xl font-semibold text-center">Les Matchs</h3>
 
         <div class="overflow-hidden">
             <table class="w-full mx-10">
                 <thead class="border-b my-5">
                     <tr>
-                        <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                        <th scope="col" class="text-lg font-medium text-gray-900 px-6 py-4 text-left">
                             Matchs joués
                         </th>
-                        <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                        <th scope="col" class="text-lg font-medium text-gray-900 px-6 py-4 text-left">
                             Matchs gagnés
                         </th>
-                        <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                        <th scope="col" class="text-lg font-medium text-gray-900 px-6 py-4 text-left">
                             Matchs perdus
                         </th>
-                        <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                        <th scope="col" class="text-lg font-medium text-gray-900 px-6 py-4 text-left">
                             Matchs nuls
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-b">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <tr class="border-b text-center">
+                        <td class="px-6 py-4 whitespace-nowrap text-lg font-medium text-gray-900">
                             <?php echo $matchs[0] ?>
                         </td>
-                        <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <td class="text-lg text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                             <?php echo $matchs[1] . '%' ?>
                         </td>
-                        <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <td class="text-lg text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                             <?php echo $matchs[2] . '%' ?>
                         </td>
-                        <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <td class="text-lg text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                             <?php echo $matchs[3] . '%' ?>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <h3 class="m-5 text-2xl font-semibold text-center">Les joueurs</h3>
     </section>
     <section class="grid place-items-center ml-72 mr-12">
         
-        <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
+    <h3 class="pt-12 m-5 text-2xl font-semibold text-center">Les joueurs</h3>
+        <ul class="w-full px-10 divide-y divide-gray-200 dark:divide-gray-700">
             <?php
             //Affichage des stats de chaque joueurs
             foreach ($positions as $joueur => $position) {
@@ -133,11 +133,11 @@ if ($_SESSION['email'] == '') {
                         break;
                 }
                 echo '<li class="pb-3 sm:pb-4" >
-            <div class="flex items-center space-x-4 my-4">
-                <div class="flex-shrink-0">
+            <div class="flex items-center justify-center space-x-4 my-4">
+                <div class="">
                     <img class="w-16 h-16 rounded-full" src="' . $position['picture'] . '" alt="Photo de ' . $joueur . '">
                 </div>
-                <div class="flex-1 min-w-0">
+                <div class="">
                     <p class="text-m font-medium text-gray-900 truncate ">
                         [' . $position['license'] . '] - ' . $joueur . '
                     </p>
