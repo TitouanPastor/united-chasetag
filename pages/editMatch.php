@@ -28,15 +28,6 @@
     $idMatch = base64_decode($_GET['id']);
     $idMatch = openssl_decrypt($idMatch, "aes-256-ecb", "toto");
 
-    // Restriction de la date de saisie à la date du jour + 1 semaine
-    // Obtenir la date du jour
-    // $today = new DateTime();
-
-    // Ajouter une semaine à la date du jour
-    // $minDate = $today->add(new DateInterval('P1W'));
-
-    // Formater la date minimale au format Y-m-d (année-mois-jour)
-    // $minDate = $minDate->format('Y-m-d');
 
     // On inclut les fichiers nécessaires
     require_once('match.php');

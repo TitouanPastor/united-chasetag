@@ -21,7 +21,7 @@
 
     // On initialise les variables
     $info_login = '';
-    require_once('Auth.php');
+    require_once('auth.php');
     $auth = new Auth();
 
     // Traitement du formulaire
