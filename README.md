@@ -1,24 +1,46 @@
-# R3.01 - Projet PHP - united-chasetag
+# R3.01 - PHP Project - united-chasetag
 
-Création d'une application web pour aider l'eentraineur à effecctuer les sélections des joueurs pour les matchs de chasetag.
 
-# L'application
 
-L'application permet de : 
+Creation of a web application to assist the coach in making player selections for chasetag matches.
+
+
+
+# The application
+
+
+
+The application allows to : 
+
     
-    - Admnistrer la liste des joueurs
-    - Administrer la liste des matchs
-    - Ajouter des notes personelles sur chaque joueur 
-    - Preciser le statut d'un joueur (ctif, Blessé, Suspendu, Absent)
-    - séléctionner les joueurs pour chaque match. En pricisant si il es titulaire ou remplacant
-    - Evaluation de chaque joueur ayant participé au match
 
-# Membre du groupe
-Groupe A :
+    - Manage the list of players
+
+    - Manage the list of matches
+
+    - Add personal notes on each player 
+
+    - Specify the status of a player (Active, Injured, Suspended, Absent)
+
+    - Select players for each match. Specify if he is a starter or a substitute
+
+    - Evaluation of each player who participated in the match
+
+
+
+# Group member
+
+Group A :
+
+
 
     - BAYCHE Baptiste
     - PASTOR Titouan
 
+
+
 # Installation
 
-Aucune installation n'est nécessaire pour utiliser l'application. Il suffit de télécharger le dossier et de l'ouvrir dans un navigateur web.
+
+
+No installation is necessary to use the application. Just download the file and open it in a web browser.
